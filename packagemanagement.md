@@ -42,6 +42,22 @@ a more complex packaging to make up shortcommings of simple tarballs,
 rpm database located in /var/lib/rpm and uses "rpm --rebuilddb" command to repair a corrupted rpm database.
 does not handle deps.
 
+rpm --builddb : repairs a currupted rpm db.
+
+rpm -qpi : qurry, particular package, information, find out more information about a certain rpm package
+
+rpm -qa : querry all packages on the system
+
+sudo rpm -ivh : install, verbose, hashmark(progress bar like) , installs a specific package
+
+sudo rpm -U : upgrades and installed package with a newer version.
+
+sudo rpm -e : erase, uninstalls an installed package
+
+rpm -Va : verify all installed packages
+
+rpm2cpio : converts a .rpm file to a cpio archive file
+
 #### Source Installation
 
 #### Pip
