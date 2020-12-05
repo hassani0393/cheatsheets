@@ -64,11 +64,7 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 
 #### Snapp
 
-#### bin
-
-#### lib
-
-#### conf
+#### bin, lib, conf
 
 #### systemd
 
