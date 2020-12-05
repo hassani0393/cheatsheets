@@ -72,10 +72,15 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 
 #### systemd
 
+
 #### add repo
+/etc/yum.repos.d contains extra repository information.
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm will install the epel repository or any other repository that the address for is give.
+
 
 #### local repo
 
 #### create repo
+we can create a .repo file in /etc/yum.repo.d
 
 #### clean up
