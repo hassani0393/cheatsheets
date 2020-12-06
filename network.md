@@ -90,3 +90,9 @@ world is provided to those who work in the corporate office or headquarters.
 SAN : Storage area network, high capacity storage devices that are connected by a high speed private network, separate from the LAN, using a storage specific switch. Typically fiber networks.
 
 Binding is the process of having communication processes relating and understanding eachother.
+
+mnemonic for remembering OSI's seven layers : " Please Do Not Throw Susage Pizza Away. "
+
+Application Layer: The spot where users acually communicate or interact with the computer. typically through application processes, interfaces, or APIs that connect the application to the OS.
+
+
