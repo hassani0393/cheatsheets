@@ -3,8 +3,23 @@ ____
 
 #### NIC configuration
 
+ifconfig : interface configuration, prints a list of network interfaces with their configurations.
+
+netstat : network statistics, all connections established currently in the host. -t : tcp connection  -l : listening sockets(open ports) 
+          -n : ip adresses as numbers(do not resolve host names.)
+ip link : shows status of available network interfaces
+
+loopback represents the host itself 127.0.0.1 localhost
+
+ip addr : shows the ip adress configuration of network interfaces
+
+route 
+ifdown
+
 #### Network Services
+
 The file /etc/services lists network services.
+
 | Port Number | Protocol | Service |
 | --- | --- | --- |
 | 20(data), 21(control) | tcp, udp | FTP |
@@ -43,3 +58,17 @@ The file /etc/services lists network services.
 #### Netmask
 
 #### Network+
+
+A big lan is divided intos smaller lans called workgroups, for each department.
+
+A router is used to connect lans.
+
+| Common Dedicated servers | Duty |
+| --- | --- |
+| File Server | Stores and dispenses files |
+| Mail Server | The network's post office; handles email functions |
+| Print Server | Manages printers on the network |
+| Web Server | Manages web-based activities by running Hypertext Transfer Protocol (HTTP) for storing web content and accessing web pages |
+| Application Server | Manages network applications |
+| Proxy Server | Handles tasks in the place of other machines on the network, particularly an internet connection. |
+
