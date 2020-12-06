@@ -72,3 +72,6 @@ A router is used to connect lans.
 | Application Server | Manages network applications |
 | Proxy Server | Handles tasks in the place of other machines on the network, particularly an internet connection. |
 
+In TCP/IP(Transmission Control Protocol/Internet Protocol) speak, a host is any network device with an IP address. including servers and workstations.
+
+In an internetwork, hosts on a LAN use
