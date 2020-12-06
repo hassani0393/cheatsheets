@@ -59,9 +59,9 @@ The file /etc/services lists network services.
 
 #### Network+
 
-A big lan is divided intos smaller lans called workgroups, for each department.
+A big LAN is divided intos smaller LANs called workgroups, for each department.
 
-A router is used to connect lans.
+A router is used to connect LANs.
 
 | Common Dedicated servers | Duty |
 | --- | --- |
@@ -74,4 +74,19 @@ A router is used to connect lans.
 
 In TCP/IP(Transmission Control Protocol/Internet Protocol) speak, a host is any network device with an IP address. including servers and workstations.
 
-In an internetwork, hosts on a LAN use
+In an internetwork, hosts on a LAN use hardware addresses(MAC) to communicate with other hosts on the LAN, but logical Addresses(IP adresses) to communicate with hosts on a different LAN on the other side of the router.
+
+Every connection into a router is a different logical network.
+
+WAN protocol MPLS, is a switching mechanism that imposes labels (numbers) to data and then uses those labels to forward data when it arrives at the MPLS network. 
+
+Common Physical Network Topologies: Bus, Star, Ring, Mesh, Point-to-point, Point-to-multipoint, Hybrid
+
+Network Backbone, Network segment
+
+CAN : campus area network, s network that encompasses several building where data, services and connectivity to the outside
+world is provided to those who work in the corporate office or headquarters.
+
+SAN : Storage area network, high capacity storage devices that are connected by a high speed private network, separate from the LAN, using a storage specific switch. Typically fiber networks.
+
+Binding is the process of having communication processes relating and understanding eachother.
