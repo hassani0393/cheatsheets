@@ -53,13 +53,120 @@ The file /etc/services lists network services.
 
 #### Bond
 
+To activate multiple network cards behind the same ip address, this is called bonding.
+
+We start with ifconfig -a to get a list of all the network cards on our system.
+ifconfig -a | grep Ethernet
+eth0      Link encap:Ethernet  HWaddr 08:00:27:DD:0D:5C  
+eth1      Link encap:Ethernet  HWaddr 08:00:27:DA:C1:49  
+eth2      Link encap:Ethernet  HWaddr 08:00:27:40:03:3B
+
+To bond eth1 and eth2:
+
+We will name our bond bond0 and add this entry to modprobe so the kernel can load the bonding module when we bring the interface up.
+cat /etc/modprobe.d/bonding.conf 
+alias bond0 bonding
+
+Then we create /etc/sysconfig/network-scripts/ifcfg-bond0 to configure our bond0 interface.
+
+pwd
+/etc/sysconfig/network-scripts
+cat ifcfg-bond0 
+DEVICE=bond0
+IPADDR=192.168.1.199
+NETMASK=255.255.255.0
+ONBOOT=yes
+BOOTPROTO=none
+USERCTL=no
+
+Next we create two files, one for each network card that we will use as slave in bond0.
+
+#cat ifcfg-eth1
+DEVICE=eth1
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+USERCTL=no
+#cat ifcfg-eth2
+DEVICE=eth2
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+USERCTL=no
+
+Finally we bring the interface up with ifup bond0.
+
+#ifup bond0
+#ifconfig bond0
+bond0     Link encap:Ethernet  HWaddr 08:00:27:DA:C1:49  
+          inet addr:192.168.1.199  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:feda:c149/64 Scope:Link
+          UP BROADCAST RUNNING MASTER MULTICAST  MTU:1500  Metric:1
+          RX packets:251 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:21 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:39852 (38.9 KiB)  TX bytes:1070 (1.0 KiB)
+
+The bond should also be visible in /proc/net/bonding.
+
+cat /proc/net/bonding/bond0 
+Ethernet Channel Bonding Driver: v3.5.0 (November 4, 2008)
+
+Bonding Mode: load balancing (round-robin)
+MII Status: up
+MII Polling Interval (ms): 0
+Up Delay (ms): 0
+Down Delay (ms): 0
+
+Slave Interface: eth1
+MII Status: up
+Link Failure Count: 0
+Permanent HW addr: 08:00:27:da:c1:49
+
+Slave Interface: eth2
+MII Status: up
+Link Failure Count: 0
+Permanent HW addr: 08:00:27:40:03:3b
+
+To have more than one ip address on the same network card, we call this binding ip addresses.
+
+To bind extra IP addresses: 
+
+cat /etc/sysconfig/network-scripts/ifcfg-eth0:0             //Last zero can be anything else.
+DEVICE="eth0:0"
+IPADDR="192.168.1.133"
+cat /etc/sysconfig/network-scripts/ifcfg-eth0:1
+DEVICE="eth0:0"
+IPADDR="192.168.1.142"
+
+To up and down a virtual network interface(use ifdown to down.):
+
+ifup eth0:0
+ifconfig | grep 'inet '
+inet addr:192.168.1.99  Bcast:192.168.1.255  Mask:255.255.255.0
+inet addr:192.168.1.133  Bcast:192.168.1.255  Mask:255.255.255.0
+inet addr:127.0.0.1  Mask:255.0.0.0
+
+ifup eth0:1
+ifconfig | grep 'inet '
+          inet addr:192.168.1.99  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet addr:192.168.1.133  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet addr:192.168.1.142  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          
+To verify extra ip-adresses use ifconfig.
+
+          
+
 #### Virtual IP
 
 #### Netmask
 
 #### Network+
 
-A big LAN is divided intos smaller LANs called workgroups, for each department.
+A big LAN is divided into smaller LANs called workgroups, for each department.
 
 A router is used to connect LANs.
 
