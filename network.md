@@ -93,6 +93,28 @@ Binding is the process of having communication processes relating and understand
 
 mnemonic for remembering OSI's seven layers : " Please Do Not Throw Susage Pizza Away. "
 
-Application Layer: The spot where users acually communicate or interact with the computer. typically through application processes, interfaces, or APIs that connect the application to the OS.
+The Application Layer: The spot where users acually communicate or interact with the computer. typically through application processes, interfaces, or APIs that connect the application to the OS. Doesn't include the applications themselves but comes to play when an application needs to access remote resources.
 
+The Presentation Layer: Presents data to the application layer and is responsible for data translation and code formatting. Makes sure that data transfered by the application layer from one system can be read and understood by the application layer on another system, by providing neccessary translation services. Tasks like data compression, decompression, encryption and decryption happen at this layer.
+
+The Session Layer: responsible for setting up, managing and then tearing down sessions between presentation layer entities. Also provides dialogue control between devices, or nodes. Keeps each application's data seperate from another's. ex. multiple chrome tabs at the same time
+
+The Transport layer: Segments and reassembles data into a data stream. provides end-to-end data transport services and can establish a logical connection between the sending host and destination host on an internetwork. must understand connection-oriented(reliable) protocol of the transport layer. buffering flood of datagrams and flood-control system are part of the transport layer.
+
+connection-oriented communication: Sender's TCP proccess contacts the reciever's TCP process to establish a connection. The resulting connection is called a virtual circuit. They agree on the amount of information that will be sent in either direction. The recivier's TCP sends back an acknowledgment. The virual circuit setup is called __overhead__.
+
+Windowing: a window is the quantity of data segments(bytes) that the transmitting machine is allowed to send without receiving an acknowledgment.
+
+Positive Acknowledgment with Retransmission makes sure that data won't be lost or duplicated. 
+
+TCP is connection-oriented and UDP is connectionless, and the choice is up to the application developer. The transport layer is capable of both.
+
+These network devices operate at all seven layers of the OSI model: Network management stations (NMS), Web and application servers, Gateways (not default gateways), Network hosts
+
+These devices operate primarily at the Physical layer: NICs, Transceivers, Repeaters, Hubs
+
+The Network Layer: manages logical device addressing, tracks the location of devices on the network and detemines the best way to move data.Transports traffic between devices that aren't locally attached. Routers are layer 3 devices, specified at the Network layer and provide the routing services within an internetwork.
+
+The Data Link Layer: Provides the physical transmission of the data and handles error notification, network topology, and flow control. That messages are delivered to the proper device on LAN using hardware(MAC) addresses and translates messages from the Network layer into bits for the physical layer to transmit.
+Message to data frame, adds a customized header containing the destination and source hardware addresses.
 
