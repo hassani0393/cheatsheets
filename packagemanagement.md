@@ -68,6 +68,40 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 snapd daemon is the background service that manages and maintains the snap environment on a linux system.Also provides the snap command.
 yum install snapd
 
+sudo systemctl enable --now snapd.socket
+
+to check if snapd is active and enabled :
+sudo systemctl is-active snapd.socket
+sudo systemctl status snapd.socket
+sudo systemctl is-enabled snapd.socket
+
+enable classic snap support by creating a symbolic link between /var/lib/snapd/snap and /snap 
+sudo ln -s /var/lib/snapd/snap /snap
+
+snap version : to check version of the snapd and snap command line tool installed on the system.
+
+snap find "category" : to check snap store for finding snaps in a cetrain category.
+
+snap info nameOfSnap : checks both snap store and installed snaps for information about the snap.
+
+sudo snap install nameOfSnap : installs the snap 
+
+To install from a different channel: edge, beta, or candidate, use the --edge, --beta, or --candidate options respectively. Or use the --channel option and specify the channel you wish to install from.
+
+snap list : summary of installed snaps
+
+sudo snap refresh mailspring : updates mailspring snap
+
+sudo snap refresh	:update all snaps on the local system
+
+sudo snap revert mailspring : reverts the snap mailspring to the previously used version. Note that the data associated with it will also revert.
+
+sudo snap disable mailspring : desables the snap mailspring
+
+sudo snap enable mailspring : enables the specified snap
+
+sudo snap remove mailspring : removes the snap completely.
+
 
 
 #### bin, lib, conf
