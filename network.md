@@ -45,6 +45,16 @@ The file /etc/services lists network services.
 
 #### NetworkManager
 
+yum install NetworkManager
+
+systemctl status NetworkManager
+
+ To start NetworkManager:
+~]# systemctl start NetworkManager
+
+To enable NetworkManager automatically at boot time:
+~]# systemctl enable NetworkManager
+
 #### Static/Dynamic IP
 
 #### DHCP Client
