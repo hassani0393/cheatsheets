@@ -60,13 +60,30 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 
 #### Source Installation
 
+
+
 #### Pip
 
 #### Snapp
+snapd daemon is the background service that manages and maintains the snap environment on a linux system.Also provides the snap command.
+yum install snapd
+
+
 
 #### bin, lib, conf
 
 #### systemd
+Replaces shell scripts with compiled C code, but still 99% compatible with older System V init scripts.
+
+It uses unit files located at: /usr/lib/systemd/system (Do not edit! They can be modified by package updates.)  
+                              /etc/systemd/system (unit files here takes precedence to other unit files. Safest place to modify.)
+                               Runtime unit files: /run/systemd/system
+
+systemd still checks /sbin/init
+
+systemctl list-unit-files : lists all system's unit files by different sections.
+
+systemctl cat name.unit : This will print out the contents of the unit file specified.
 
 
 #### add repo
