@@ -60,6 +60,15 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 
 #### Source Installation
 
+bunzip2 thefile.tar.bz2 :unzips the file.
+
+tar xvf thefile.tar : untars the file.
+
+sudo apt-get install build-essential git : tools needed.
+
+configure : probes the system to findout information needed about installation.
+
+
 
 
 #### Pip
@@ -105,6 +114,9 @@ sudo snap remove mailspring : removes the snap completely.
 
 
 #### bin, lib, conf
+
+bin 
+
 
 #### systemd
 Replaces shell scripts with compiled C code, but still 99% compatible with older System V init scripts.
