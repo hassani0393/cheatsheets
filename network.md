@@ -61,6 +61,8 @@ To enable NetworkManager automatically at boot time:
 
 #### Route
 
+https://opensource.com/business/16/8/introduction-linux-network-routing
+
 #### Bond
 
 To activate multiple network cards behind the same ip address, this is called bonding.
