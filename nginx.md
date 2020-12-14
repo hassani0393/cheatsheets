@@ -30,6 +30,20 @@ URI: path portion of the URL.
 ___
 
 #### Proxy Pass
+Server {
+  listen 80;
+  server_name photos.example.com;
+  
+  location / {
+  proxy_pass http://127.0.0.1:3000;
+  proxy_http_version 1.1;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Real_IP $remote_addr;
+  proxy_set_header Upgrade $htt_upgrade;
+  proxy_set_header Connection "Upgrade";
+  
+  }
+}  
 
 #### Authentication
 
@@ -42,6 +56,10 @@ ___
 #### HAproxy
 
 #### LAMP
+it's for apache
+
+#### LEMP
+is for nginx
 
 #### XAMP
 
