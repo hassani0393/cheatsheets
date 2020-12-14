@@ -20,12 +20,49 @@ URI: path portion of the URL.
 #### Location Configuration
 
 #### Load Balancer
+upstream module is used for load balancing.
+
+if you don't specify anything you get round robin load balancing.
+
+upstream backend {    : name of the particular group of servers.
+    server backend1.example.com       weight=5 max_conns=100; : prioritize this server. stablish maximum of 100 connections.
+    server backend2.example.com:8080  max_fails=3 fail_timeout=20s; :if in 20 seconds 3 fails happens, downs the server, called passive health checking.
+    server unix:/tmp/backend3   ;
+
+    server backup1.example.com:8080   backup; :this server is marked as backup.
+    server backup2.example.com:8080   backup;
+}
+
+server {
+    location / {
+        proxy_pass http://backend;
+    }
+}
+
+___
+hash is determining where trafic shoud go based on a set keyword.
+
+upstream photos {
+    hash $request_uri;
+
+server 127.0.0.1:3000;
+server 127.0.0.1:3100;
+server 127.0.0.1:3101;
+
+
+}
+___
+
+ip_hash load balancing method where requests are distributed between servers based on client addresses.
+
 
 ##### Traditional LB
 
 ##### HTTP/HTTPS
 
 ##### Application Load Balancing (ALB)
+
+
 
 ___
 
@@ -36,7 +73,7 @@ Server {
   
   location / {
   proxy_pass http://127.0.0.1:3000;
-  proxy_http_version 1.1;
+  proxy_http_version 1.1;     : using http 1.1 for having keepalive connections. 
   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
   proxy_set_header X-Real_IP $remote_addr;
   proxy_set_header Upgrade $htt_upgrade;
@@ -46,13 +83,22 @@ Server {
 }  
 
 #### Authentication
+Install or verify httpd-tools.
 
 #### Nginx Mointoring Metrics
 
 #### Logging
+log_module is used for logging conf. consisting of log_format and access_log directive !not for error loging.
+error_log : sets the file and logging level. comes from core module. 
 
+adding $host to the log format will allow us to see to which server the request has been sent.
+
+ we can connect the logging to the system's syslog. vim conf.d -> 
+ access_log syslog:server=uix:/dev/log main;
+ 
+ 
 #### SSL
-
+ssl module
 #### HAproxy
 
 #### LAMP
