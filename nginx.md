@@ -9,7 +9,7 @@ Worker Proccess model with threads triggered by events, supports dynamic third p
 main server configuration: /etc/nginx/nginx.conf
 virtual hosts go into conf.d directory in the .conf files.
 
-
+Content compression: 
 
 
 ##### HTTP
@@ -72,6 +72,8 @@ upstream allbackend {
 
 
 ##### Traditional LB
+
+
 
 ##### HTTP/HTTPS
 
