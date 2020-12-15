@@ -17,7 +17,14 @@ language of the Internet. Application layer protocol built upon TCP/IP model. De
 HTTPS is the same only with encrypted communication between web clients and servers using TLS/SSL.
 Default protocol in the URL: http 80, https 443. The resource address is relative to virtual host root.
 URI: path portion of the URL.
+
 #### Location Configuration
+using location and regex we can put different directives for accessing certain location.
+location ~ .jpg {
+                        return 403;
+}
+
+
 
 #### Load Balancer
 upstream module is used for load balancing.
@@ -54,6 +61,14 @@ server 127.0.0.1:3101;
 ___
 
 ip_hash load balancing method where requests are distributed between servers based on client addresses.
+
+upstream allbackend {
+    ip_hash;
+    server 127.0.0.1:2222;
+    server 127.0.0.1:3333;
+    server 127.0.0.1:4444;
+    server 127.0.0.1:5555;
+}
 
 
 ##### Traditional LB
