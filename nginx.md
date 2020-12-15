@@ -18,6 +18,16 @@ HTTPS is the same only with encrypted communication between web clients and serv
 Default protocol in the URL: http 80, https 443. The resource address is relative to virtual host root.
 URI: path portion of the URL.
 
+HTTP Request : URL, Method type, Headers, Body
+
+HTTP METHODS
+GET : retrieves data from the server
+POST : submit data to the server
+PUT : update data already on the server
+DELETE : deletes data from the server
+
+HTTP Response : Status code, Headers, Body
+
 #### Location Configuration
 using location and regex we can put different directives for accessing certain location.
 location ~ .jpg {
