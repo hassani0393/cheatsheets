@@ -13,17 +13,39 @@ Content compression:
 
 
 ##### HTTP
+Is a request-response protocol between a client and server.
+
 language of the Internet. Application layer protocol built upon TCP/IP model. Defines the format for sending info between web clients and web servers.
 HTTPS is the same only with encrypted communication between web clients and servers using TLS/SSL.
 Default protocol in the URL: http 80, https 443. The resource address is relative to virtual host root.
 URI: path portion of the URL.
 
+HTTP Request Circle:
+1. The browser requests an HTML page. The server returns an HTML file.
+2. The browser requests a style sheet. The server returns a CSS file.
+3. The browser requests an JPG image. The server returns a JPG file.
+4. The browser requests JavaScript code. The server returns a JS file.
+5. The browser requests data. The server returns data (in XML or JSON).
+
+XMLHttpRequest Object (XHR):
+All browsers have a built-in one. It's a JavaScript object that is used to transfer data between a web browser and a web server.
+XHR is often used to request and recieve data for the purpose of modifying a web page.
+IT IS NOT USED WITH HTTP 
 HTTP Request : URL, Method type, Headers, Body
 
+HTTP status message: the server always return one for every request. The most common is 200 OK. 
+
+
+
+
 HTTP METHODS
-GET : retrieves data from the server
-POST : submit data to the server
-PUT : update data already on the server
+GET : retrieves data from the server, one of the most common HTTP methods. GET requests can be cached. GET requests remain in the browser history. GET requests can be bookmarked. GET requests should never be used when dealing with sensitive data. GET requests have length restrictions. GET requests are only used to request data and not to modify.
+
+POST : submits data to the server to create/update a resource. The data sent to the server with POST is stored in the request body of the HTTP request.
+POST is never cached. POST does not remain in the browser history. POST requests cannot be bookmarked. POST requests have no length restriction on data.
+
+PUT : update data already on the server. 
+
 DELETE : deletes data from the server
 
 HTTP Response : Status code, Headers, Body
