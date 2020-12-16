@@ -179,6 +179,42 @@ Install or verify httpd-tools.
 
 #### Nginx Mointoring Metrics
 
+Syntax:	stub_status;
+Default:	—
+Context:	server, location
+The basic status information will be accessible from the surrounding location.
+
+In versions prior to 1.7.5, the directive syntax required an arbitrary argument, for example, “stub_status on”.
+Data
+The following status information is provided:
+
+Active connections
+The current number of active client connections including Waiting connections.
+accepts
+The total number of accepted client connections.
+handled
+The total number of handled connections. Generally, the parameter value is the same as accepts unless some resource limits have been reached (for example, the worker_connections limit).
+requests
+The total number of client requests.
+Reading
+The current number of connections where nginx is reading the request header.
+Writing
+The current number of connections where nginx is writing the response back to the client.
+Waiting
+The current number of idle client connections waiting for a request.
+Embedded Variables
+The ngx_http_stub_status_module module supports the following embedded variables (1.3.14):
+
+$connections_active
+same as the Active connections value;
+$connections_reading
+same as the Reading value;
+$connections_writing
+same as the Writing value;
+$connections_waiting
+same as the Waiting value.
+
+
 #### Logging
 log_module is used for logging conf. consisting of log_format and access_log directive !not for error loging.
 error_log : sets the file and logging level. comes from core module. 
@@ -192,8 +228,27 @@ adding $host to the log format will allow us to see to which server the request 
 #### SSL
 
 Generating a self-signed certificate.
-ssl module
-#### HAproxy
+
+mkdir /etc/nginx/ssl
+
+openssl req -x509 -nodes -days 365  -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key  -out /etc/nginx/ssl/public.pem
+Generating a 2048 bit RSA private key
+
+#### HAproxy Load Balancer
+
+Benefits and drawbacks of using HAProxy
+HAProxy is another open source load balancing solution. As it is a single-purpose solution in that it only offers load-balancing capabilities, it is much more focused on that one aspect compared to Nginx. Below are a few benefits and drawbacks to using HAProxy.
+
+Benefits:
+Provides a comprehensive list of 61 different metrics. See section 9 for a full list of available statistics
+The status page is much more detailed and user-friendly as compared to Nginx's
+Easily able to integrate with third party monitoring services (e.g. Datadog)
+
+Drawbacks:
+Does not provide other features that Nginx offers such as web server capabilities
+HAProxy is quite thorough in terms of metrics it provides. Of course, since it is only a load balancing software you can't use it for other purposes as you can with Nginx.
+
+
 
 #### LAMP
 it's for apache
