@@ -35,6 +35,20 @@ gzip_min_length 20;
 gzip_proxied; (study later.)
 
 gunzip on; :if the client requests unziped file it will unzip it.
+
+PageSpeed by Google: 
+cd opt
+bash <(curl -f -L -sS https://ngxpagespeed.com/install) --help :flags for installation of pagespeed.
+
+bash <(curl -f -L -sS https://ngxpagespeed.com/install) -b . --dynamic-module --ngx-padespeed-version latest-stable : installation without downing the server.
+
+./configure --with-compat --add-dynamic-module=./incubator-pagespeed-ngx-latest-stable
+
+make modules
+
+cp objs/ngx_padespeed.so /etc/nginx/modules/
+
+
 ##### HTTP
 Is a request-response protocol between a client and server.
 
@@ -72,6 +86,12 @@ PUT : update data already on the server.
 DELETE : deletes data from the server
 
 HTTP Response : Status code, Headers, Body
+
+HTTP2 in NGINX: To enable http2 in nginx content must be served in ssl.
+server {
+  listen 443 ssl http;
+  server_name_;
+  root /usr/share/nginx/html;
 
 #### Location Configuration
 using location and regex we can put different directives for accessing certain location.
@@ -170,6 +190,8 @@ adding $host to the log format will allow us to see to which server the request 
  
  
 #### SSL
+
+Generating a self-signed certificate.
 ssl module
 #### HAproxy
 
