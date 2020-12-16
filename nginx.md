@@ -9,9 +9,32 @@ Worker Proccess model with threads triggered by events, supports dynamic third p
 main server configuration: /etc/nginx/nginx.conf
 virtual hosts go into conf.d directory in the .conf files.
 
+worker_processes should be equal to cpu cores for a dedicated server. auto will detect number of cpu cores and sets it equal to that.
+
+total number of connections = worker_processes * worker_connections = number of clients you can server.
+
+su -s /bin/sh -c "ulimit -Hn" : hard limit for worker connections.
+su -s /bin/sh -c "ulimit -Sn" : Soft limit for worker connections.
+
+worker_rlimit_nofile 2048; : sets the soft limit for worker processes. used to increase the limit without restarting the main process.
+
+keep-alive connections allows a single tcp connection to stay open for more than one req.
+keepalive_timeout 75; : sets it to 75s. 
+keepalive_requests 100; :sets the number of requests that can be made in a single tcp keepalive connection.
+To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.
+
 Content compression: 
+gzip on;
 
+gzip_types text/plain text/css application/x-javascript application/javascript text/xml application/xml application/xml+rss text/javascript image/x-icon image/bmp image/svg+xml;
 
+gzip_disable regex;
+
+gzip_min_length 20;
+
+gzip_proxied; (study later.)
+
+gunzip on; :if the client requests unziped file it will unzip it.
 ##### HTTP
 Is a request-response protocol between a client and server.
 
