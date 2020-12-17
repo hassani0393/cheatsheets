@@ -58,6 +58,21 @@ To enable NetworkManager automatically at boot time:
 #### Static/Dynamic IP
 
 #### DHCP Client
+1. DHCPDiscover, a new host sends a message to everyone. ignored by everyone but the DHCP server.
+2. DHCPOffer, DHCP server sends an IP offer to the new host.
+3. DHCPRequest, Ok is given from host to server.
+4. DHCPACK, The server sends the IP address ,subnet mask ,default gateway, and the DNS server.
+
+The DHCP server keeps a list of IP, MAC and Expiration date.
+uses UDP Ports: client 68, server 67
+
+Configuration in linux: vim /etc/network/interfaces
+The /etc/sysconfig/network-scripts/ifcfg-eth0 file should contain the following lines:
+DEVICE=eth0
+BOOTPROTO=dhcp
+ONBOOT=yes
+
+
 
 #### Route
 

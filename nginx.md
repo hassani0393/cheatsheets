@@ -96,7 +96,7 @@ server {
 #### Location Configuration
 using location and regex we can put different directives for accessing certain location.
 location ~ .jpg {
-                        return 403;
+        return 403;
 }
 
 
