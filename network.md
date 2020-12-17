@@ -60,7 +60,7 @@ Assigning a Static Address Using ip Commands
 To assign an IP address to an interface
 ip address add 10.0.0.3/24 dev eth0
 
-
+The DHCP server assigns dynamic IP to hosts.
 
 #### DHCP Client
 1. DHCPDiscover, a new host sends a message to everyone. ignored by everyone but the DHCP server.
@@ -195,6 +195,8 @@ To verify extra ip-adresses use ifconfig.
 #### Virtual IP
 
 #### Netmask
+
+A Netmask is a 32-bit "mask" used to divide an IP address into subnets and specify the network's available hosts. In a netmask, two bits are always automatically assigned. For example, in 255.255.225.0, "0" is the assigned network address. In 255.255.255.255, "255" is the assigned broadcast address. The 0 and 255 are always assigned and cannot be used.
 
 #### Network+
 
