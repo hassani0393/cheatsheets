@@ -115,9 +115,87 @@ sudo snap remove mailspring : removes the snap completely.
 
 #### bin, lib, conf
 
-bin 
+##### bin
+/bin : Essential user command binaries (for use by all users)
+Purpose
+/bin contains commands that may be used by both the system administrator and by users, but which are required when no other filesystems are mounted (e.g. in single user mode). It may also contain commands which are used indirectly by scripts.
 
+##### /usr/bin
+/usr/bin : Most user commands
+Purpose
+This is the primary directory of executable commands on the system.
 
+##### lib
+/lib : Essential shared libraries and kernel modules
+Purpose
+The /lib directory contains those shared library images needed to boot the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
+
+##### /usr/lib : Libraries for programming and packages
+Purpose
+/usr/lib includes object files, libraries, and internal binaries that are not intended to be executed directly by users or shell scripts.
+
+Applications may use a single subdirectory under /usr/lib. If an application uses a subdirectory, all architecture-dependent data exclusively used by the application must be placed within that subdirectory.
+
+##### /usr/src : 
+Source code (optional)
+Purpose
+Source code may be placed in this subdirectory, only for reference purposes. 
+
+/etc : Host-specific system configuration
+Purpose
+The /etc hierarchy contains configuration files. A "configuration file" is a local file used to control the operation of a program; it must be static and cannot be an executable binary.
+
+Requirements
+No binaries may be located under /etc.
+
+The following directories, or symbolic links to directories are required in /etc:
+
+Directory	Description
+opt	Configuration for /opt
+X11	Configuration for the X Window system (optional)
+sgml	Configuration for SGML (optional)
+xml	Configuration for XML (optional)
+Specific Options
+The following directories, or symbolic links to directories must be in /etc, if the corresponding subsystem is installed:
+
+Directory	Description
+opt	Configuration for /opt
+The following files, or symbolic links to files, must be in /etc if the corresponding subsystem is installed:
+
+File	Description
+csh.login	Systemwide initialization file for C shell logins (optional)
+exports	NFS filesystem access control list (optional)
+fstab	Static information about filesystems (optional)
+ftpusers	FTP daemon user access control list (optional)
+gateways	File which lists gateways for routed (optional)
+gettydefs	Speed and terminal settings used by getty (optional)
+group	User group file (optional)
+host.conf	Resolver configuration file (optional)
+hosts	Static information about host names (optional)
+hosts.allow	Host access file for TCP wrappers (optional)
+hosts.deny	Host access file for TCP wrappers (optional)
+hosts.equiv	List of trusted hosts for rlogin, rsh, rcp (optional)
+hosts.lpd	List of trusted hosts for lpd (optional)
+inetd.conf	Configuration file for inetd (optional)
+inittab	Configuration file for init (optional)
+issue	Pre-login message and identification file (optional)
+ld.so.conf	List of extra directories to search for shared libraries (optional)
+motd	Post-login message of the day file (optional)
+mtab	Dynamic information about filesystems (optional)
+mtools.conf	Configuration file for mtools (optional)
+networks	Static information about network names (optional)
+passwd	The password file (optional)
+printcap	The lpd printer capability database (optional)
+profile	Systemwide initialization file for sh shell logins (optional)
+protocols	IP protocol listing (optional)
+resolv.conf	Resolver configuration file (optional)
+rpc	RPC protocol listing (optional)
+securetty	TTY access control for root login (optional)
+services	Port names for network services (optional)
+shells	Pathnames of valid login shells (optional)
+syslog.conf	Configuration file for syslogd (optional)
+mtab does not fit the static nature of /etc: it is excepted for historical reasons.
+___
 #### systemd
 Replaces shell scripts with compiled C code, but still 99% compatible with older System V init scripts.
 
