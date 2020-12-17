@@ -179,6 +179,8 @@ Install or verify httpd-tools.
 
 #### Nginx Mointoring Metrics
 
+Module ngx_http_stub_status_module
+
 Syntax:	stub_status;
 Default:	—
 Context:	server, location
@@ -215,6 +217,11 @@ $connections_waiting
 same as the Waiting value.
 
 
+NGINX Amplify
+is SaaS tool that you can use to monitor up to five servers for free
+visualizes NGINX performance, and monitors the OS, PHP‑FPM, Docker containers, and more. A unique feature in Amplify is a static analyzer for NGINX configuration that provides recommendations for making the configuration more secure and efficient.
+
+can also be done with Promatheus
 #### Logging
 log_module is used for logging conf. consisting of log_format and access_log directive !not for error loging.
 error_log : sets the file and logging level. comes from core module. 
@@ -251,11 +258,11 @@ HAProxy is quite thorough in terms of metrics it provides. Of course, since it i
 
 
 #### LAMP
-it's for apache
+it's for Linux Apache Mysql PHP
 
 #### LEMP
-is for nginx
+is for Linux nginx MySquel PHP
 
 #### XAMP
-
+is a free and open-source cross-platform web server solution stack package developed by Apache Friends, made of Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
 
