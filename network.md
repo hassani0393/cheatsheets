@@ -56,6 +56,11 @@ To enable NetworkManager automatically at boot time:
 ~]# systemctl enable NetworkManager
 
 #### Static/Dynamic IP
+Assigning a Static Address Using ip Commands
+To assign an IP address to an interface
+ip address add 10.0.0.3/24 dev eth0
+
+
 
 #### DHCP Client
 1. DHCPDiscover, a new host sends a message to everyone. ignored by everyone but the DHCP server.
