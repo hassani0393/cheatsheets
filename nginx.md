@@ -46,35 +46,35 @@ syntax for sending a signal to master process.
 
 ## A Sample Config File with Multiple Contexts
 
-    user nobody; # a directive in the 'main' context
+    user nobody; // a directive in the 'main' context
 
     events {
-        # configuration of connection processing
+        // configuration of connection processing
     }
 
 
     http {
-        # Configuration specific to HTTP and affecting all virtual servers  
+       // Configuration specific to HTTP and affecting all virtual servers  
 
         server {
-            # configuration of HTTP virtual server 1       
+            // configuration of HTTP virtual server 1       
             location /one {
-                # configuration for processing URIs starting with '/one'
+                // configuration for processing URIs starting with '/one'
             }
             location /two {
-                # configuration for processing URIs starting with '/two'
+                // configuration for processing URIs starting with '/two'
             }
         } 
         
         server {
-            # configuration of HTTP virtual server 2
+            //y configuration of HTTP virtual server 2
         }
     }
 
     stream {
-        # Configuration specific to TCP/UDP and affecting all virtual servers
+        // Configuration specific to TCP/UDP and affecting all virtual servers
         server {
-            # configuration of TCP virtual server 1 
+            // configuration of TCP virtual server 1 
         }
     }
 
@@ -103,40 +103,41 @@ To enable http2 in nginx content must be served in ssl. This will activate it.
 <p>Upstream module is used for load balancing.
 if you don't specify anything you get round robin load balancing.</p>
 
-    upstream backend {    //name of the particular group of servers.
-    server backend1.example.com       weight=5 max_conns=100; // prioritize this server. stablish maximum of 100 connections.
-    server backend2.example.com:8080  max_fails=3 fail_timeout=20s; //if in 20 seconds 3 fails happens, downs the server, called passive health checking.
-    server unix:/tmp/backend3   ;
+    upstream backend //name of the particular group of servers.
+    {    
+        server backend1.example.com       weight=5 max_conns=100; // prioritize this server. stablish maximum of 100 connections.
+        server backend2.example.com:8080  max_fails=3 fail_timeout=20s; //if in 20 seconds 3 fails happens, downs the server, called passive health checking.
+        server unix:/tmp/backend3;
 
-    server backup1.example.com:8080   backup; //this server is marked as backup.
-    server backup2.example.com:8080   backup;
+        server backup1.example.com:8080   backup; //this server is marked as backup.
+        server backup2.example.com:8080   backup;
     }
 
     server {
-    location / {
-        proxy_pass http://backend;
-    }
-}
+        location / {
+            proxy_pass http://backend;
+        }   
+    }   
 
 ___
 <p>Hash is determining where trafic shoud go based on a set keyword.</p>
 
     upstream photos {
-    hash $request_uri;
-    server 127.0.0.1:3000;
-    server 127.0.0.1:3100;
-    server 127.0.0.1:3101;
+        hash $request_uri;
+        server 127.0.0.1:3000;
+        server 127.0.0.1:3100;
+        server 127.0.0.1:3101;
     }
 ___
 
 <p>ip_hash load balancing method where requests are distributed between servers based on client addresses.</p>
     
     upstream allbackend {
-    ip_hash;
-    server 127.0.0.1:2222;
-    server 127.0.0.1:3333;
-    server 127.0.0.1:4444;
-    server 127.0.0.1:5555;
+        ip_hash;
+        server 127.0.0.1:2222;
+        server 127.0.0.1:3333;
+        server 127.0.0.1:4444;
+        server 127.0.0.1:5555;
     }
 
 
@@ -145,33 +146,33 @@ ___
 ## Proxy Pass
 
     Server {
-    listen 80;
-    server_name photos.example.com;
+        listen 80;
+        server_name photos.example.com;
   
     location / {
-    proxy_pass http://127.0.0.1:3000;
-    proxy_http_version 1.1;     // using http 1.1 for having keepalive connections. 
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Real_IP $remote_addr;
-    proxy_set_header Upgrade $htt_upgrade;
-    proxy_set_header Connection "Upgrade";
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;     // using http 1.1 for having keepalive connections. 
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header Upgrade $htt_upgrade;
+        proxy_set_header Connection "Upgrade";
   
         }
     }  
 
 ## Authentication
     server {
-    listen 80 default_server;
-    server_name _;
-    root /usr/share/nginx/html;
+         listen 80 default_server;
+        server_name _;
+         root /usr/share/nginx/html;
 
-    location = /admin.html {
-    auth_basic "Login Required";
-    auth_basic_user_file /etc/nginx/.htpasswd;
-    }
+         location = /admin.html {
+         auth_basic "Login Required";
+         auth_basic_user_file /etc/nginx/.htpasswd;
+        }
 
-    error_page 404 /404.html;
-    error_page 500 501 502 503 504 /50x.html;
+        error_page 404 /404.html;
+        error_page 500 501 502 503 504 /50x.html;
     }
 <p>Install or verify httpd-tools.<p>
 
