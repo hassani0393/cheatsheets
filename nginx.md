@@ -1,20 +1,18 @@
-### Nginx
-___
-#### Web Server
+# Nginx Cheat Sheet 
+* [Nginx Documentation](http://nginx.org/en/docs/)
 
-
-#### Nginx Deep Dive
+## Nginx Deep Dive
 Worker Proccess model with threads triggered by events, supports dynamic third party modules.
-/etc/nginx is the directory for configurations of nginx.
+<br>/etc/nginx is the directory for configurations of nginx.
 main server configuration: /etc/nginx/nginx.conf
 virtual hosts go into conf.d directory in the .conf files.
 
 worker_processes should be equal to cpu cores for a dedicated server. auto will detect number of cpu cores and sets it equal to that.
 
-total number of connections = worker_processes * worker_connections = number of clients you can server.
+total number of connections = worker_processes * worker_connections = Number of clients you can serve.
 
-su -s /bin/sh -c "ulimit -Hn" : hard limit for worker connections.
-su -s /bin/sh -c "ulimit -Sn" : Soft limit for worker connections.
+    su -s /bin/sh -c "ulimit -Hn" // hard limit for worker connections.
+    su -s /bin/sh -c "ulimit -Sn" // Soft limit for worker connections.
 
 worker_rlimit_nofile 2048; : sets the soft limit for worker processes. used to increase the limit without restarting the main process.
 
@@ -23,16 +21,16 @@ keepalive_timeout 75; : sets it to 75s.
 keepalive_requests 100; :sets the number of requests that can be made in a single tcp keepalive connection.
 To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.
 
-Content compression: 
-gzip on;
+    
+    gzip on; //Content compression
 
 gzip_types text/plain text/css application/x-javascript application/javascript text/xml application/xml application/xml+rss text/javascript image/x-icon image/bmp image/svg+xml;
 
-gzip_disable regex;
+    gzip_disable regex;
 
-gzip_min_length 20;
+    gzip_min_length 20;
 
-gzip_proxied; (study later.)
+    gzip_proxied; (study later.)
 
 gunzip on; :if the client requests unziped file it will unzip it.
 
@@ -49,135 +47,103 @@ make modules
 cp objs/ngx_padespeed.so /etc/nginx/modules/
 
 
-##### HTTP
-Is a request-response protocol between a client and server.
+## HTTP
+ 
+<br>
 
-language of the Internet. Application layer protocol built upon TCP/IP model. Defines the format for sending info between web clients and web servers.
-HTTPS is the same only with encrypted communication between web clients and servers using TLS/SSL.
-Default protocol in the URL: http 80, https 443. The resource address is relative to virtual host root.
-URI: path portion of the URL.
+### HTTP2 in NGINX
+To enable http2 in nginx content must be served in ssl. This will activate it.
 
-HTTP Request Circle:
-1. The browser requests an HTML page. The server returns an HTML file.
-2. The browser requests a style sheet. The server returns a CSS file.
-3. The browser requests an JPG image. The server returns a JPG file.
-4. The browser requests JavaScript code. The server returns a JS file.
-5. The browser requests data. The server returns data (in XML or JSON).
-
-XMLHttpRequest Object (XHR):
-All browsers have a built-in one. It's a JavaScript object that is used to transfer data between a web browser and a web server.
-XHR is often used to request and recieve data for the purpose of modifying a web page.
-IT IS NOT USED WITH HTTP 
-HTTP Request : URL, Method type, Headers, Body
-
-HTTP status message: the server always return one for every request. The most common is 200 OK. 
+        server { 
+        listen 443 ssl http;
+        server_name_;
+        root /usr/share/nginx/html;
+        }
+## Location Configuration
+    location ~ .jpg {
+           return 403;
+    }
 
 
 
+## Load Balancer
 
-HTTP METHODS
-GET : retrieves data from the server, one of the most common HTTP methods. GET requests can be cached. GET requests remain in the browser history. GET requests can be bookmarked. GET requests should never be used when dealing with sensitive data. GET requests have length restrictions. GET requests are only used to request data and not to modify.
+<p>upstream module is used for load balancing.
+if you don't specify anything you get round robin load balancing.</p>
 
-POST : submits data to the server to create/update a resource. The data sent to the server with POST is stored in the request body of the HTTP request.
-POST is never cached. POST does not remain in the browser history. POST requests cannot be bookmarked. POST requests have no length restriction on data.
-
-PUT : update data already on the server. 
-
-DELETE : deletes data from the server
-
-HTTP Response : Status code, Headers, Body
-
-HTTP2 in NGINX: To enable http2 in nginx content must be served in ssl.
-server {
-  listen 443 ssl http;
-  server_name_;
-  root /usr/share/nginx/html;
-
-#### Location Configuration
-using location and regex we can put different directives for accessing certain location.
-location ~ .jpg {
-        return 403;
-}
-
-
-
-#### Load Balancer
-upstream module is used for load balancing.
-
-if you don't specify anything you get round robin load balancing.
-
-upstream backend {    : name of the particular group of servers.
-    server backend1.example.com       weight=5 max_conns=100; : prioritize this server. stablish maximum of 100 connections.
-    server backend2.example.com:8080  max_fails=3 fail_timeout=20s; :if in 20 seconds 3 fails happens, downs the server, called passive health checking.
+    upstream backend {    //name of the particular group of servers.
+    server backend1.example.com       weight=5 max_conns=100; // prioritize this server. stablish maximum of 100 connections.
+    server backend2.example.com:8080  max_fails=3 fail_timeout=20s; //if in 20 seconds 3 fails happens, downs the server, called passive health checking.
     server unix:/tmp/backend3   ;
 
-    server backup1.example.com:8080   backup; :this server is marked as backup.
+    server backup1.example.com:8080   backup; //this server is marked as backup.
     server backup2.example.com:8080   backup;
-}
+    }
 
-server {
+    server {
     location / {
         proxy_pass http://backend;
     }
 }
 
 ___
-hash is determining where trafic shoud go based on a set keyword.
+<p>Hash is determining where trafic shoud go based on a set keyword.</p>
 
-upstream photos {
+    upstream photos {
     hash $request_uri;
-
-server 127.0.0.1:3000;
-server 127.0.0.1:3100;
-server 127.0.0.1:3101;
-
-
-}
+    server 127.0.0.1:3000;
+    server 127.0.0.1:3100;
+    server 127.0.0.1:3101;
+    }
 ___
 
-ip_hash load balancing method where requests are distributed between servers based on client addresses.
-
-upstream allbackend {
+<p>ip_hash load balancing method where requests are distributed between servers based on client addresses.</p>
+    
+    upstream allbackend {
     ip_hash;
     server 127.0.0.1:2222;
     server 127.0.0.1:3333;
     server 127.0.0.1:4444;
     server 127.0.0.1:5555;
-}
-
-
-##### Traditional LB
-
-
-
-##### HTTP/HTTPS
-
-##### Application Load Balancing (ALB)
-
+    }
 
 
 ___
 
-#### Proxy Pass
-Server {
-  listen 80;
-  server_name photos.example.com;
-  
-  location / {
-  proxy_pass http://127.0.0.1:3000;
-  proxy_http_version 1.1;     : using http 1.1 for having keepalive connections. 
-  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Real_IP $remote_addr;
-  proxy_set_header Upgrade $htt_upgrade;
-  proxy_set_header Connection "Upgrade";
-  
-  }
-}  
+## Proxy Pass
 
-#### Authentication
-Install or verify httpd-tools.
+    Server {
+    listen 80;
+    server_name photos.example.com;
+  
+    location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;     // using http 1.1 for having keepalive connections. 
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header Upgrade $htt_upgrade;
+    proxy_set_header Connection "Upgrade";
+  
+        }
+    }  
 
-#### Nginx Mointoring Metrics
+## Authentication
+    server {
+    listen 80 default_server;
+    server_name _;
+    root /usr/share/nginx/html;
+
+    location = /admin.html {
+    auth_basic "Login Required";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+    error_page 404 /404.html;
+    error_page 500 501 502 503 504 /50x.html;
+    }
+<p>Install or verify httpd-tools.<p>
+
+## Nginx Mointoring Metrics
 
 Module ngx_http_stub_status_module
 
@@ -190,79 +156,83 @@ In versions prior to 1.7.5, the directive syntax required an arbitrary argument,
 Data
 The following status information is provided:
 
-Active connections
+### Active connections
 The current number of active client connections including Waiting connections.
-accepts
+### accepts
 The total number of accepted client connections.
-handled
+### handled
 The total number of handled connections. Generally, the parameter value is the same as accepts unless some resource limits have been reached (for example, the worker_connections limit).
-requests
+### requests
 The total number of client requests.
 Reading
 The current number of connections where nginx is reading the request header.
-Writing
+### Writing
 The current number of connections where nginx is writing the response back to the client.
-Waiting
+### Waiting
 The current number of idle client connections waiting for a request.
-Embedded Variables
+## Embedded Variables
 The ngx_http_stub_status_module module supports the following embedded variables (1.3.14):
 
-$connections_active
+##### $connections_active
 same as the Active connections value;
-$connections_reading
+##### $connections_reading
 same as the Reading value;
-$connections_writing
+##### $connections_writing
 same as the Writing value;
-$connections_waiting
+##### $connections_waiting
 same as the Waiting value.
 
 
-NGINX Amplify
-is SaaS tool that you can use to monitor up to five servers for free
-visualizes NGINX performance, and monitors the OS, PHP‑FPM, Docker containers, and more. A unique feature in Amplify is a static analyzer for NGINX configuration that provides recommendations for making the configuration more secure and efficient.
+#### NGINX Amplify
+is SaaS tool that you can use to monitor up to five servers for free.<br>
+Visualizes NGINX performance, and monitors the OS, PHP‑FPM, Docker containers, and more. A unique feature in Amplify is a static analyzer for NGINX configuration that provides recommendations for making the configuration more secure and efficient.
 
-can also be done with Promatheus
-#### Logging
-log_module is used for logging conf. consisting of log_format and access_log directive !not for error loging.
-error_log : sets the file and logging level. comes from core module. 
+## Logging
+<p>log_module is used for logging configuration, consisting of log_format and access_log directive.<br>
 
-adding $host to the log format will allow us to see to which server the request has been sent.
+<p>error_log : Sets the file and logging level. Comes from the core module.</p> 
 
- we can connect the logging to the system's syslog. vim conf.d -> 
- access_log syslog:server=uix:/dev/log main;
+    error_log  /var/log/nginx/error.log warn;
+
+
+Adding $host to the log format will allow us to see to which server the request has been sent.
+
+<p>We can connect the logging to the system's syslog.</p>
+
+    vim conf.d -> access_log syslog:server=uix:/dev/log main;
  
  
-#### SSL
+## SSL
 
-Generating a self-signed certificate.
+Generating a 2048 bit RSA private key.
 
-mkdir /etc/nginx/ssl
+    mkdir /etc/nginx/ssl
 
-openssl req -x509 -nodes -days 365  -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key  -out /etc/nginx/ssl/public.pem
-Generating a 2048 bit RSA private key
+    openssl req -x509 -nodes -days 365  -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key  -out /etc/nginx/ssl/public.pem
 
-#### HAproxy Load Balancer
 
-Benefits and drawbacks of using HAProxy
-HAProxy is another open source load balancing solution. As it is a single-purpose solution in that it only offers load-balancing capabilities, it is much more focused on that one aspect compared to Nginx. Below are a few benefits and drawbacks to using HAProxy.
+## HAproxy Load Balancer
 
-Benefits:
-Provides a comprehensive list of 61 different metrics. See section 9 for a full list of available statistics
+<p>HAProxy is another open source load balancing solution. As it is a single-purpose solution in that it only offers load-balancing capabilities, it is much more focused on that one aspect compared to Nginx. Below are a few benefits and drawbacks to using HAProxy.
+</p>
+
+### Benefits
+Provides a comprehensive list of 61 different metrics. See 
 The status page is much more detailed and user-friendly as compared to Nginx's
 Easily able to integrate with third party monitoring services (e.g. Datadog)
 
-Drawbacks:
-Does not provide other features that Nginx offers such as web server capabilities
+### Drawbacks
+Does not provide other features that Nginx offers such as web server capabilities.
 HAProxy is quite thorough in terms of metrics it provides. Of course, since it is only a load balancing software you can't use it for other purposes as you can with Nginx.
 
 
 
-#### LAMP
+## LAMP
 it's for Linux Apache Mysql PHP
 
-#### LEMP
+## LEMP
 is for Linux nginx MySquel PHP
 
-#### XAMP
+## XAMP
 is a free and open-source cross-platform web server solution stack package developed by Apache Friends, made of Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
 
