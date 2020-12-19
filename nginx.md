@@ -1,7 +1,7 @@
 # Nginx Cheat Sheet 
 * [Nginx Documentation](http://nginx.org/en/docs/)
 
-Overview of serving content over net:<br>
+Deployment Process:<br>
 ![Overview of serving content](https://cdn-media-1.freecodecamp.org/images/eBec3M2S8ovEMvyboray1w2JoZn1kp3uueXY)
 ## Extracted Info From Nginx Deep Dive Course 
 
