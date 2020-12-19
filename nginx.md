@@ -34,6 +34,50 @@ Sets it to 75s.
 
 <p>To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.</p>
 
+## Control Signals
+syntax for sending a signal to master process.
+
+    nginx -s <SIGNAL>
+
+* quit – Shut down gracefully
+* reload – Reload the configuration file
+* reopen – Reopen log files
+* stop – Shut down immediately (fast shutdown)
+
+## A Sample Config File with Multiple Contexts
+
+    user nobody; # a directive in the 'main' context
+
+    events {
+        # configuration of connection processing
+    }
+
+
+    http {
+        # Configuration specific to HTTP and affecting all virtual servers  
+
+        server {
+            # configuration of HTTP virtual server 1       
+            location /one {
+                # configuration for processing URIs starting with '/one'
+            }
+            location /two {
+                # configuration for processing URIs starting with '/two'
+            }
+        } 
+        
+        server {
+            # configuration of HTTP virtual server 2
+        }
+    }
+
+    stream {
+        # Configuration specific to TCP/UDP and affecting all virtual servers
+        server {
+            # configuration of TCP virtual server 1 
+        }
+    }
+
 
 ## HTTP
  
