@@ -9,7 +9,7 @@
 
 * Virtual hosts go into conf.d directory in the .conf files.
 
-worker_processes should be equal to cpu cores for a dedicated server. auto will detect number of cpu cores and sets it equal to that.
+**worker_processes** should be equal to cpu cores for a dedicated server. auto will detect number of cpu cores and sets it equal to that.
 
 total number of connections =     **worker_processes** * **worker_connections** =   **Number** of clients you can serve.
 
@@ -56,7 +56,7 @@ To enable http2 in nginx content must be served in ssl. This will activate it.
 
 ## Load Balancer
 
-<p>upstream module is used for load balancing.
+<p>Upstream module is used for load balancing.
 if you don't specify anything you get round robin load balancing.</p>
 
     upstream backend {    //name of the particular group of servers.
@@ -148,11 +148,11 @@ The following status information is provided:
 
 ### Active connections
 The current number of active client connections including Waiting connections.
-### accepts
+### Accepts
 The total number of accepted client connections.
-### handled
+### Handled
 The total number of handled connections. Generally, the parameter value is the same as accepts unless some resource limits have been reached (for example, the worker_connections limit).
-### requests
+### Requests
 The total number of client requests.
 Reading
 The current number of connections where nginx is reading the request header.
@@ -174,7 +174,7 @@ same as the Waiting value.
 
 
 ### NGINX Amplify
-is SaaS tool that you can use to monitor up to five servers for free.<br>
+Is a SaaS tool that you can use to monitor up to five servers for free.<br>
 Visualizes NGINX performance, and monitors the OS, PHP‑FPM, Docker containers, and more. A unique feature in Amplify is a static analyzer for NGINX configuration that provides recommendations for making the configuration more secure and efficient.
 
 ## Logging
