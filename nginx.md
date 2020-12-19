@@ -1,50 +1,38 @@
 # Nginx Cheat Sheet 
 * [Nginx Documentation](http://nginx.org/en/docs/)
 
-## Nginx Deep Dive
-Worker Proccess model with threads triggered by events, supports dynamic third party modules.
-<br>/etc/nginx is the directory for configurations of nginx.
-main server configuration: /etc/nginx/nginx.conf
-virtual hosts go into conf.d directory in the .conf files.
+## Extracted Info From Nginx Deep Dive Course 
+
+<p> /etc/nginx is the directory for configurations of nginx.
+
+* Main server configuration directory: /etc/nginx/nginx.conf
+
+* Virtual hosts go into conf.d directory in the .conf files.
 
 worker_processes should be equal to cpu cores for a dedicated server. auto will detect number of cpu cores and sets it equal to that.
 
-total number of connections = worker_processes * worker_connections = Number of clients you can serve.
+total number of connections =     **worker_processes** * **worker_connections** =   **Number** of clients you can serve.
+
 
     su -s /bin/sh -c "ulimit -Hn" // hard limit for worker connections.
     su -s /bin/sh -c "ulimit -Sn" // Soft limit for worker connections.
 
-worker_rlimit_nofile 2048; : sets the soft limit for worker processes. used to increase the limit without restarting the main process.
+sets the soft limit for worker processes. used to increase the limit without restarting the main process.
 
-keep-alive connections allows a single tcp connection to stay open for more than one req.
-keepalive_timeout 75; : sets it to 75s. 
-keepalive_requests 100; :sets the number of requests that can be made in a single tcp keepalive connection.
-To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.
+    worker_rlimit_nofile 2048;
+ 
+**keep-alive** connections allows a single tcp connection to stay open for more than one req.
 
+Sets it to 75s. 
     
-    gzip on; //Content compression
+    keepalive_timeout 75; 
 
-gzip_types text/plain text/css application/x-javascript application/javascript text/xml application/xml application/xml+rss text/javascript image/x-icon image/bmp image/svg+xml;
 
-    gzip_disable regex;
+ Sets the number of requests that can be made in a single tcp keepalive connection.
 
-    gzip_min_length 20;
+    keepalive_requests 100;
 
-    gzip_proxied; (study later.)
-
-gunzip on; :if the client requests unziped file it will unzip it.
-
-PageSpeed by Google: 
-cd opt
-bash <(curl -f -L -sS https://ngxpagespeed.com/install) --help :flags for installation of pagespeed.
-
-bash <(curl -f -L -sS https://ngxpagespeed.com/install) -b . --dynamic-module --ngx-padespeed-version latest-stable : installation without downing the server.
-
-./configure --with-compat --add-dynamic-module=./incubator-pagespeed-ngx-latest-stable
-
-make modules
-
-cp objs/ngx_padespeed.so /etc/nginx/modules/
+To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.
 
 
 ## HTTP
@@ -145,15 +133,17 @@ ___
 
 ## Nginx Mointoring Metrics
 
-Module ngx_http_stub_status_module
+Module used for monitoring: **ngx_http_stub_status_module**
 
-Syntax:	stub_status;
-Default:	—
-Context:	server, location
+<code>Syntax:	stub_status;<br>
+Default:	—<br>
+Context:	server, location<br>
 The basic status information will be accessible from the surrounding location.
+</code>
 
 In versions prior to 1.7.5, the directive syntax required an arbitrary argument, for example, “stub_status on”.
-Data
+
+## Data
 The following status information is provided:
 
 ### Active connections
@@ -173,17 +163,17 @@ The current number of idle client connections waiting for a request.
 ## Embedded Variables
 The ngx_http_stub_status_module module supports the following embedded variables (1.3.14):
 
-##### $connections_active
+#### **$connections_active**
 same as the Active connections value;
-##### $connections_reading
+#### **$connections_reading**
 same as the Reading value;
-##### $connections_writing
+#### **$connections_writing**
 same as the Writing value;
-##### $connections_waiting
+#### **$connections_waiting**
 same as the Waiting value.
 
 
-#### NGINX Amplify
+### NGINX Amplify
 is SaaS tool that you can use to monitor up to five servers for free.<br>
 Visualizes NGINX performance, and monitors the OS, PHP‑FPM, Docker containers, and more. A unique feature in Amplify is a static analyzer for NGINX configuration that provides recommendations for making the configuration more secure and efficient.
 
@@ -217,22 +207,22 @@ Generating a 2048 bit RSA private key.
 </p>
 
 ### Benefits
-Provides a comprehensive list of 61 different metrics. See 
+<p>Provides a comprehensive list of 61 different metrics. See 
 The status page is much more detailed and user-friendly as compared to Nginx's
-Easily able to integrate with third party monitoring services (e.g. Datadog)
+Easily able to integrate with third party monitoring services (e.g. Datadog)</p>
 
 ### Drawbacks
-Does not provide other features that Nginx offers such as web server capabilities.
-HAProxy is quite thorough in terms of metrics it provides. Of course, since it is only a load balancing software you can't use it for other purposes as you can with Nginx.
+<p>Does not provide other features that Nginx offers such as web server capabilities.
+HAProxy is quite thorough in terms of metrics it provides. Of course, since it is only a load balancing software you can't use it for other purposes as you can with Nginx.</p>
 
 
 
 ## LAMP
-it's for Linux Apache Mysql PHP
+It stands for Linux Apache Mysql PHP
 
 ## LEMP
-is for Linux nginx MySquel PHP
+It stands for Linux nginx MySquel PHP
 
 ## XAMP
-is a free and open-source cross-platform web server solution stack package developed by Apache Friends, made of Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
+XAMP is a free and open-source cross-platform web server solution stack package developed by Apache Friends, made of Apache HTTP Server, MariaDB database, and interpreters for scripts written in the PHP and Perl programming languages.
 
