@@ -180,11 +180,11 @@ ___
 
 Module used for monitoring: **ngx_http_stub_status_module**
 
-<code>Syntax:	stub_status;<br>
+Syntax:	stub_status;<br>
 Default:	—<br>
 Context:	server, location<br>
 The basic status information will be accessible from the surrounding location.
-</code>
+
 
 In versions prior to 1.7.5, the directive syntax required an arbitrary argument, for example, “stub_status on”.
 
