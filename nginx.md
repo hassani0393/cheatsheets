@@ -216,6 +216,12 @@ same as the Writing value;
 #### **$connections_waiting**
 same as the Waiting value.
 
+### Passive Health Checks
+    upstream backend {
+        server backend1.example.com;
+        server backend2.example.com max_fails=3 fail_timeout=30s;
+    }
+* Active health check is only in NGINX Plus. 
 
 ### NGINX Amplify
 Is a SaaS tool that you can use to monitor up to five servers for free.<br>
