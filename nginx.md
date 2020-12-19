@@ -32,7 +32,7 @@ Sets it to 75s.
 
     keepalive_requests 100;
 
-To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.
+<p>To keep-alive with proxy servers(upstream servers), we use keepalive directive in upstream block to set max number of idle keepalive connections to upstream servers that are preserved in the cache of each worker process.</p>
 
 
 ## HTTP
