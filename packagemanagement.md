@@ -1,65 +1,100 @@
+# Package management
 
-## Package management
+## YUM
+___
+By default yum deletes downloaded files when they aren't needed anymore. However by caching we can store downloaded files.
 
-#### yum
-By default yum deletes downloaded files when they aren't needed anymore. but by caching we can store downloaded files.
-temp files storage: /var/cache/yum/$basearch/$releasever/ $base architecture  $releaseversion of redhat linux
+Temporary files storage: /var/cache/yum/$basearch/$releasever/$base architecture$releaseversion of redhat linux
+
 to change defualt cache location modify cachedir in /etc/yum.conf
+
 Global yum conf options /etc/yum.conf
+
 reads repo info /etc/yum.repos.d
+
 caches latest repo info in /var/cache/yum
-dnf to replace yum in fedora and uses same syntax,
-
-yum update : searches online repos for updated packs compare to what is installed on the system and upgrades packages.
-
-yum search : searches the yup repos for specific pack
-
-yum info : lists info about a specific pack
-
-yum list installed : displays all installed pack , use | less for ease.
-
-yum clean all : clean yum db and cache for fresh and curroption removal
-
-yum install : install a specific pack and all of its dep's
-
-yum remove : uninstalls a pack, leaves deps
-
-yum autoremove : like remove but also deps
-
-yum whatprovided : find out what pack provides a specific file name
-
-yum reinstall : reinstalls a specific pack
-
-yum-utils is package that allows for more utilities such as downloading packs whithout installation.
-
-using above: yumdownloader *name of pack* : downloads without installation
-
-yum makecache : 
 
 
-#### rpm
+ Searches online repos for updated packs compare to what is installed on the system and upgrades packages:
+
+    yum update
+
+Searches the yup repos for specific pack:
+
+    yum search 
+
+Lists info about a specific pack:
+
+    yum info  
+
+Displays all installed pack , use | less for ease.
+
+    yum list installed: 
+
+Clean yum db and cache for fresh and curroption removal
+
+    yum clean all: 
+
+Install a specific pack and all of its deps:
+
+    yum install 
+
+Uninstalls a pack, leaves deps:
+
+    yum remove
+
+Like remove but also deps:
+
+    yum autoremove 
+
+Find out what pack provides a specific file name:
+
+    yum whatprovided
+
+Reinstalls a specific pack
+
+    yum reinstall : 
+
+yum-utils is a package that allows for more utilities such as downloading packs whithout installation. Using yum utils this commands downloads without installation:
+
+    yumdownloader *name of pack* : 
+
+## RPM
+___
 a more complex packaging to make up shortcommings of simple tarballs,
-rpm database located in /var/lib/rpm and uses "rpm --rebuilddb" command to repair a corrupted rpm database.
+RPM database located in /var/lib/rpm and uses "rpm --rebuilddb" command to repair a corrupted RPM database.
 does not handle deps.
 
-rpm --builddb : repairs a currupted rpm db.
+To repair a corrupted RPM DB:
 
-rpm -qpi : qurry, particular package, information, find out more information about a certain rpm package
+    rpm --builddb 
 
-rpm -qa : querry all packages on the system
+To find out more information about a certain rpm package:
 
-sudo rpm -ivh : install, verbose, hashmark(progress bar like) , installs a specific package
+    rpm -qpi //qurry, particular package, information 
 
-sudo rpm -U : upgrades and installed package with a newer version.
+To querry all packages on the system:
 
-sudo rpm -e : erase, uninstalls an installed package
+    rpm -qa
 
-rpm -Va : verify all installed packages
+To install a specific package:
+
+    rpm -ivh //install, verbose, hashmark(progress bar like) 
+
+To upgrade and install package with a newer version.
+
+    rpm -U  
+
+To uninstall an installed package
+
+    rpm -e //erase, 
+
+    rpm -Va : verify all installed packages
 
 rpm2cpio : converts a .rpm file to a cpio archive file
 
-#### Source Installation
-
+## Source Installation
+___
 bunzip2 thefile.tar.bz2 :unzips the file.
 
 tar xvf thefile.tar : untars the file.
@@ -71,9 +106,10 @@ configure : probes the system to findout information needed about installation.
 
 
 
-#### Pip
-
-#### Snapp
+## Pip
+___
+## Snapp
+___
 snapd daemon is the background service that manages and maintains the snap environment on a linux system.Also provides the snap command.
 yum install snapd
 
@@ -113,30 +149,30 @@ sudo snap remove mailspring : removes the snap completely.
 
 
 
-#### bin, lib, conf
-
-##### bin
+## bin, lib, conf
+___
+### bin
 /bin : Essential user command binaries (for use by all users)
 Purpose
 /bin contains commands that may be used by both the system administrator and by users, but which are required when no other filesystems are mounted (e.g. in single user mode). It may also contain commands which are used indirectly by scripts.
 
-##### /usr/bin
+### /usr/bin
 /usr/bin : Most user commands
 Purpose
 This is the primary directory of executable commands on the system.
 
-##### lib
+### lib
 /lib : Essential shared libraries and kernel modules
 Purpose
 The /lib directory contains those shared library images needed to boot the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
 
-##### /usr/lib : Libraries for programming and packages
+### /usr/lib : Libraries for programming and packages
 Purpose
 /usr/lib includes object files, libraries, and internal binaries that are not intended to be executed directly by users or shell scripts.
 
 Applications may use a single subdirectory under /usr/lib. If an application uses a subdirectory, all architecture-dependent data exclusively used by the application must be placed within that subdirectory.
 
-##### /usr/src : 
+### /usr/src : 
 Source code (optional)
 Purpose
 Source code may be placed in this subdirectory, only for reference purposes. 
@@ -195,12 +231,13 @@ services	Port names for network services (optional)
 shells	Pathnames of valid login shells (optional)
 syslog.conf	Configuration file for syslogd (optional)
 mtab does not fit the static nature of /etc: it is excepted for historical reasons.
+
+## systemd
 ___
-#### systemd
 Replaces shell scripts with compiled C code, but still 99% compatible with older System V init scripts.
 
 It uses unit files located at: /usr/lib/systemd/system (Do not edit! They can be modified by package updates.)  
-                              /etc/systemd/system (unit files here takes precedence to other unit files. Safest place to modify.)
+    /etc/systemd/system (unit files here takes precedence to other unit files. Safest place to modify.)
                                Runtime unit files: /run/systemd/system
 
 systemd still checks /sbin/init
@@ -210,14 +247,17 @@ systemctl list-unit-files : lists all system's unit files by different sections.
 systemctl cat name.unit : This will print out the contents of the unit file specified.
 
 
-#### add repo
+## add repo
+___
 /etc/yum.repos.d contains extra repository information.
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm will install the epel repository or any other repository that the address for is give.
 
 
-#### local repo
-
-#### create repo
+## local repo
+___
+## create repo
+___
 we can create a .repo file in /etc/yum.repo.d
 
-#### clean up
+## clean up
+___
