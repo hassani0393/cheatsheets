@@ -1,22 +1,16 @@
-### Network Basics
-____
+# Network Basics
 
-#### NIC configuration
+## NIC configuration
 
-ifconfig : interface configuration, prints a list of network interfaces with their configurations.
+To show device and adress information:
 
-netstat : network statistics, all connections established currently in the host. -t : tcp connection  -l : listening sockets(open ports) 
-          -n : ip adresses as numbers(do not resolve host names.)
-ip link : shows status of available network interfaces
+    ip addr show eth0 //Can also put any other device instead of eth0.
 
-loopback represents the host itself 127.0.0.1 localhost
+To show statistics about network performance:
 
-ip addr : shows the ip adress configuration of network interfaces
+    ip -s link show eth0
 
-route 
-ifdown
-
-#### Network Services
+## Network Services
 
 The file /etc/services lists network services.
 
@@ -43,26 +37,57 @@ The file /etc/services lists network services.
 | 995 | tcp | POP3S (Secure POP) |
 
 
-#### NetworkManager
+## NetworkManager
+To install NetworkManager:
 
-yum install NetworkManager
+    yum install NetworkManager
 
-systemctl status NetworkManager
+To show a list of all connections:
 
- To start NetworkManager:
-~]# systemctl start NetworkManager
+    nmcli con show // Use --active to only show active connections.
 
-To enable NetworkManager automatically at boot time:
-~]# systemctl enable NetworkManager
+To see the details of a connection:
 
-#### Static/Dynamic IP
-Assigning a Static Address Using ip Commands
-To assign an IP address to an interface
-ip address add 10.0.0.3/24 dev eth0
+    nmcli con show "Wired connection 1"
 
-The DHCP server assigns dynamic IP to hosts.
+To see a devices status and details:
 
-#### DHCP Client
+    nmcli dev status
+
+Or for a specific device:
+
+    nmcli dev show enp2s0
+
+To Creat a new connection:
+
+    nmcli con add con-name "default" type ethernet ifname eth0
+
+To disable an interface and prevent any autoconnection:
+
+    nmcli dev disconnect DEVICENAME
+
+To view different types of connections:
+
+    nmcli con add help
+
+To see modification key-value arguments of a connection:
+
+    nmcli con show "Wired connection 1"
+
+To modify an argument of a connection for example:
+
+    nmcli con mod "Wired connection 1" connection.autoconnect no
+
+
+## Static/Dynamic IP
+To change the system to the static conneciton:
+
+    nmcli con up "static"
+
+To change back to the DHCP connection.
+
+    nmcli con up "default"
+## DHCP Client
 1. DHCPDiscover, a new host sends a message to everyone. ignored by everyone but the DHCP server.
 2. DHCPOffer, DHCP server sends an IP offer to the new host.
 3. DHCPRequest, Ok is given from host to server.
@@ -71,19 +96,36 @@ The DHCP server assigns dynamic IP to hosts.
 The DHCP server keeps a list of IP, MAC and Expiration date.
 uses UDP Ports: client 68, server 67
 
-Configuration in linux: vim /etc/network/interfaces
-The /etc/sysconfig/network-scripts/ifcfg-eth0 file should contain the following lines:
-DEVICE=eth0
-BOOTPROTO=dhcp
-ONBOOT=yes
+Configuration in linux:
+
+    vim /etc/network/interfaces
+
+The __/etc/sysconfig/network-scripts/ifcfg-eth0__ file, should contain the following lines:
+
+    DEVICE=eth0
+    BOOTPROTO=dhcp
+    ONBOOT=yes
 
 
 
-#### Route
+## Route
 
-https://opensource.com/business/16/8/introduction-linux-network-routing
+To show routing information:
 
-#### Bond
+    ip route
+
+To test connectivity:
+
+    ping -c3 google.com
+
+To trace the path to a remote host:
+
+    traceroute google.com // The default is UDP. Use -I for ICMP and -T for TCP.
+
+
+
+
+## Bond
 
 To activate multiple network cards behind the same ip address, this is called bonding.
 
@@ -192,70 +234,8 @@ To verify extra ip-adresses use ifconfig.
 
           
 
-#### Virtual IP
+## Virtual IP
 
-#### Netmask
+## Netmask
 
 A Netmask is a 32-bit "mask" used to divide an IP address into subnets and specify the network's available hosts. In a netmask, two bits are always automatically assigned. For example, in 255.255.225.0, "0" is the assigned network address. In 255.255.255.255, "255" is the assigned broadcast address. The 0 and 255 are always assigned and cannot be used.
-
-#### Network+
-
-A big LAN is divided into smaller LANs called workgroups, for each department.
-
-A router is used to connect LANs.
-
-| Common Dedicated servers | Duty |
-| --- | --- |
-| File Server | Stores and dispenses files |
-| Mail Server | The network's post office; handles email functions |
-| Print Server | Manages printers on the network |
-| Web Server | Manages web-based activities by running Hypertext Transfer Protocol (HTTP) for storing web content and accessing web pages |
-| Application Server | Manages network applications |
-| Proxy Server | Handles tasks in the place of other machines on the network, particularly an internet connection. |
-
-In TCP/IP(Transmission Control Protocol/Internet Protocol) speak, a host is any network device with an IP address. including servers and workstations.
-
-In an internetwork, hosts on a LAN use hardware addresses(MAC) to communicate with other hosts on the LAN, but logical Addresses(IP adresses) to communicate with hosts on a different LAN on the other side of the router.
-
-Every connection into a router is a different logical network.
-
-WAN protocol MPLS, is a switching mechanism that imposes labels (numbers) to data and then uses those labels to forward data when it arrives at the MPLS network. 
-
-Common Physical Network Topologies: Bus, Star, Ring, Mesh, Point-to-point, Point-to-multipoint, Hybrid
-
-Network Backbone, Network segment
-
-CAN : campus area network, s network that encompasses several building where data, services and connectivity to the outside
-world is provided to those who work in the corporate office or headquarters.
-
-SAN : Storage area network, high capacity storage devices that are connected by a high speed private network, separate from the LAN, using a storage specific switch. Typically fiber networks.
-
-Binding is the process of having communication processes relating and understanding eachother.
-
-mnemonic for remembering OSI's seven layers : " Please Do Not Throw Susage Pizza Away. "
-
-The Application Layer: The spot where users acually communicate or interact with the computer. typically through application processes, interfaces, or APIs that connect the application to the OS. Doesn't include the applications themselves but comes to play when an application needs to access remote resources.
-
-The Presentation Layer: Presents data to the application layer and is responsible for data translation and code formatting. Makes sure that data transfered by the application layer from one system can be read and understood by the application layer on another system, by providing neccessary translation services. Tasks like data compression, decompression, encryption and decryption happen at this layer.
-
-The Session Layer: responsible for setting up, managing and then tearing down sessions between presentation layer entities. Also provides dialogue control between devices, or nodes. Keeps each application's data seperate from another's. ex. multiple chrome tabs at the same time
-
-The Transport layer: Segments and reassembles data into a data stream. provides end-to-end data transport services and can establish a logical connection between the sending host and destination host on an internetwork. must understand connection-oriented(reliable) protocol of the transport layer. buffering flood of datagrams and flood-control system are part of the transport layer.
-
-connection-oriented communication: Sender's TCP proccess contacts the reciever's TCP process to establish a connection. The resulting connection is called a virtual circuit. They agree on the amount of information that will be sent in either direction. The recivier's TCP sends back an acknowledgment. The virual circuit setup is called __overhead__.
-
-Windowing: a window is the quantity of data segments(bytes) that the transmitting machine is allowed to send without receiving an acknowledgment.
-
-Positive Acknowledgment with Retransmission makes sure that data won't be lost or duplicated. 
-
-TCP is connection-oriented and UDP is connectionless, and the choice is up to the application developer. The transport layer is capable of both.
-
-These network devices operate at all seven layers of the OSI model: Network management stations (NMS), Web and application servers, Gateways (not default gateways), Network hosts
-
-These devices operate primarily at the Physical layer: NICs, Transceivers, Repeaters, Hubs
-
-The Network Layer: manages logical device addressing, tracks the location of devices on the network and detemines the best way to move data.Transports traffic between devices that aren't locally attached. Routers are layer 3 devices, specified at the Network layer and provide the routing services within an internetwork.
-
-The Data Link Layer: Provides the physical transmission of the data and handles error notification, network topology, and flow control. That messages are delivered to the proper device on LAN using hardware(MAC) addresses and translates messages from the Network layer into bits for the physical layer to transmit.
-Message to data frame, adds a customized header containing the destination and source hardware addresses.
-
