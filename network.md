@@ -83,7 +83,7 @@ To modify an argument of a connection for example:
 
     nmcli con mod "Wired connection 1" connection.autoconnect no
 
-* Important: nmcli con mod will save the setting to the configuration files. To activate the changes the connection needs to be activated or reactivated:
+ Important: nmcli con mod will save the setting to the configuration files. To activate the changes the connection needs to be activated or reactivated:
 
     nmcli con up "Wired connection 1"
 
