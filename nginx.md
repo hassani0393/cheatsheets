@@ -298,11 +298,13 @@ To redirect HTTP requests to HTTPS:
 
 SSL configurations:
 
-To cache SSL handshake for one day:
+To Specifies a time during which a client may reuse the session parameters:
 
     ssl_session_timeout 1d;
 
 
+
+    ssl_session_cache shared: 
 
 ## HAproxy Load Balancer
 
