@@ -258,6 +258,7 @@ Generating a 2048 bit RSA private key.
 Example of a SSL enabled server:
 
     server {
+        
         listen       443 ssl http2;
         listen       [::]:443 ssl http2;
         server_name  _;
@@ -274,11 +275,13 @@ Example of a SSL enabled server:
 To redirect HTTP requests to HTTPS:
 
     server {
+
         listen 80 default_server;
 
         server_name_;
 
         return 301 https://$host$request_uri;
+
     }
 
 ## HAproxy Load Balancer
