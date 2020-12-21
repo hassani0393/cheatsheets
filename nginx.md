@@ -104,6 +104,18 @@ To enable http2 in nginx content must be served in SSL. This will activate it.
 
 ## Load Balancer
 
+Layer 7 Load Balancing:
+
+To pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000:
+
+        location ~ \.php$ {
+        root           html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        include        fastcgi_params;
+        }
+
 <p>Upstream module is used for load balancing.
 if you don't specify anything you get round robin load balancing.</p>
 
@@ -258,7 +270,7 @@ Generating a 2048 bit RSA private key.
 Example of a SSL enabled server:
 
     server {
-        
+
         listen       443 ssl http2;
         listen       [::]:443 ssl http2;
         server_name  _;
@@ -283,6 +295,14 @@ To redirect HTTP requests to HTTPS:
         return 301 https://$host$request_uri;
 
     }
+
+SSL configurations:
+
+To cache SSL handshake for one day:
+
+    ssl_session_timeout 1d;
+
+
 
 ## HAproxy Load Balancer
 
