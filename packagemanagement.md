@@ -306,7 +306,9 @@ To setup a local YUM repository on a client machine:
 
 In the file enter:
 
-<code>[remote]
+<code>
+
+[remote]
 
 name=RHEL Apache
 
@@ -314,7 +316,9 @@ baseurl=http://192.168.1.10 //Replace with IP address of your sever.
 
 enabled=1
 
-gpgcheck=0</code>
+gpgcheck=0
+
+</code>
 
 If configuring for FTP use this instead:
 
@@ -329,4 +333,5 @@ baseurl=ftp://192.168.1.10 //Replace with IP address of your sever.
 enabled=1
 
 gpgcheck=0
+
 </code>
