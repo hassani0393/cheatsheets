@@ -86,13 +86,15 @@ syntax for sending a signal to master process.
 <br>
 
 ### HTTP2 in NGINX
-To enable http2 in nginx content must be served in ssl. This will activate it.
+To enable http2 in nginx content must be served in SSL. This will activate it.
 
         server { 
         listen 443 ssl http;
         server_name_;
         root /usr/share/nginx/html;
         }
+
+
 ## Location Configuration
     location ~ .jpg {
            return 403;
@@ -253,6 +255,21 @@ Generating a 2048 bit RSA private key.
 
     openssl req -x509 -nodes -days 365  -newkey rsa:2048 -keyout /etc/nginx/ssl/private.key  -out /etc/nginx/ssl/public.pem
 
+Example of a SSL enabled server:
+
+    server {
+        listen       443 ssl http2;
+        listen       [::]:443 ssl http2;
+        server_name  _;
+        root         /usr/share/nginx/html;
+
+        ssl_certificate "/etc/nginx/ssl/public.pem";
+        ssl_certificate_key "/etc/nginx/ssl/private.key";
+        ssl_session_cache shared:SSL:1m;
+        ssl_session_timeout  10m;
+        ssl_ciphers PROFILE=SYSTEM;
+        ssl_prefer_server_ciphers on;
+    }
 
 ## HAproxy Load Balancer
 
