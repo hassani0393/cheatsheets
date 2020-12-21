@@ -298,13 +298,35 @@ To redirect HTTP requests to HTTPS:
 
 SSL configurations:
 
-To Specifies a time during which a client may reuse the session parameters:
+To Specifies a time during which a client may reuse the session parameters without renewal:
 
     ssl_session_timeout 1d;
 
+Sets the types and sizes of caches that store session parameters. shared will share session parameters between all worker processes. One MB of cache can store about 4000 sessions. The name can also be anything.
+
+    ssl_session_cache shared:name:50m; 
+
+To specify the ssl_protocols that we are using:
+
+    ssl_protocols TLSv1.2;
+
+To set SSL ciphers:
+
+    ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256'; // The Mozilla's recommended ciphers.
+
+To tell the server to use the ciphers set above instead of the host's prefered cipher:
+
+    ssl_prefer_server_ciphers on;
 
 
-    ssl_session_cache shared: 
+To tell the clients to only interact over https, and give them a time limit to do so, we use the following header:
+
+    add_header Strict-Transport-Security max-age=15768000; // It won't allow talk to port 80 for the next six month.
+
+OCSP stapling can also be activated:
+
+    ssl_stapling on;
+
 
 ## HAproxy Load Balancer
 
