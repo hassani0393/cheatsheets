@@ -2,24 +2,34 @@
 
 ## YUM
 ___
-By default yum deletes downloaded files when they aren't needed anymore. However by caching we can store downloaded files.
+* By default yum deletes downloaded files when they aren't needed anymore. However by caching we can store downloaded files.
 
-Temporary files storage: /var/cache/yum/$basearch/$releasever/$base architecture$releaseversion of redhat linux
+ Temporary files storage:
 
-to change defualt cache location modify cachedir in /etc/yum.conf
+     /var/cache/yum
 
-Global yum conf options /etc/yum.conf
+To change defualt cache location modify cachedir in:
 
-reads repo info /etc/yum.repos.d
+    /etc/yum.conf
 
-caches latest repo info in /var/cache/yum
+Global YUM configurations options:
+
+     /etc/yum.conf
+
+Reads repo info from:
+
+     /etc/yum.repos.d
+
+Caches latest repo info in:
+
+     /var/cache/yum
 
 
  Searches online repos for updated packs compare to what is installed on the system and upgrades packages:
 
     yum update
 
-Searches the yup repos for specific pack:
+Searches the YUM repos for specific pack:
 
     yum search 
 
@@ -31,7 +41,7 @@ Displays all installed pack , use | less for ease.
 
     yum list installed: 
 
-Clean yum db and cache for fresh and curroption removal
+Clean YUM DB and cache for refreshment and curroption removal
 
     yum clean all: 
 
@@ -43,7 +53,7 @@ Uninstalls a pack, leaves deps:
 
     yum remove
 
-Like remove but also deps:
+Like remove but also with deps:
 
     yum autoremove 
 
@@ -62,14 +72,17 @@ yum-utils is a package that allows for more utilities such as downloading packs 
 ## RPM
 ___
 a more complex packaging to make up shortcommings of simple tarballs,
-RPM database located in /var/lib/rpm and uses "rpm --rebuilddb" command to repair a corrupted RPM database.
-does not handle deps.
+RPM database located in:
+
+    /var/lib/rpm 
+
+* RPM does not handle deps.
 
 To repair a corrupted RPM DB:
 
     rpm --builddb 
 
-To find out more information about a certain rpm package:
+To find out more information about a certain RPM package:
 
     rpm -qpi //qurry, particular package, information 
 
@@ -95,169 +108,225 @@ rpm2cpio : converts a .rpm file to a cpio archive file
 
 ## Source Installation
 ___
-bunzip2 thefile.tar.bz2 :unzips the file.
+To unzip the file:
 
-tar xvf thefile.tar : untars the file.
+    bunzip2 thefile.tar.bz2 :
 
-sudo apt-get install build-essential git : tools needed.
+To untar the file:
 
-configure : probes the system to findout information needed about installation.
+    tar xvf thefile.tar : 
 
+To install tools needed:
 
-
+    sudo apt-get install build-essential git
 
 ## Pip
-___
+
+To check if Python is installed:
+
+    python --version
+
+To check if pip is available:
+
+    pip --version
+
+To install the latest version of “SomeProject”:
+
+    pip install "SomeProject"
+
+To install a specific version:
+
+    pip install "SomeProject==1.4"
+
+Upgrade an already installed SomeProject to the latest from PyPI:
+
+    pip install --upgrade SomeProject
+
 ## Snapp
 ___
-snapd daemon is the background service that manages and maintains the snap environment on a linux system.Also provides the snap command.
-yum install snapd
+To install snap daemon:
 
-sudo systemctl enable --now snapd.socket
+    yum install snapd
 
-to check if snapd is active and enabled :
-sudo systemctl is-active snapd.socket
-sudo systemctl status snapd.socket
-sudo systemctl is-enabled snapd.socket
+To enable snap:
 
-enable classic snap support by creating a symbolic link between /var/lib/snapd/snap and /snap 
-sudo ln -s /var/lib/snapd/snap /snap
+    sudo systemctl enable --now snapd.socket
 
-snap version : to check version of the snapd and snap command line tool installed on the system.
+To check if snapd is active and enabled:
 
-snap find "category" : to check snap store for finding snaps in a cetrain category.
+    sudo systemctl is-active snapd.socket
+    sudo systemctl status snapd.socket
+    sudo systemctl is-enabled snapd.socket
 
-snap info nameOfSnap : checks both snap store and installed snaps for information about the snap.
+Enable classic snap support by creating a symbolic link between __/var/lib/snapd/snap__ and __/snap__:
 
-sudo snap install nameOfSnap : installs the snap 
+    sudo ln -s /var/lib/snapd/snap /snap
 
-To install from a different channel: edge, beta, or candidate, use the --edge, --beta, or --candidate options respectively. Or use the --channel option and specify the channel you wish to install from.
+To check version of the snapd and if the snap command line tool is installed on the system:
 
-snap list : summary of installed snaps
+    snap version
 
-sudo snap refresh mailspring : updates mailspring snap
+To check snap store for finding snaps in a cetrain category:
 
-sudo snap refresh	:update all snaps on the local system
+    snap find "category"
+ 
+To check both snap store and installed snaps for information about a snap:
 
-sudo snap revert mailspring : reverts the snap mailspring to the previously used version. Note that the data associated with it will also revert.
+    snap info nameOfSnap
 
-sudo snap disable mailspring : desables the snap mailspring
+To installs a snap: 
 
-sudo snap enable mailspring : enables the specified snap
+    snap install nameOfSnap :
 
-sudo snap remove mailspring : removes the snap completely.
+* To install from a different channel, like edge, beta, or candidate, use the --edge, --beta, or --candidate options respectively. Or use the --channel option and specify the channel you wish to install from.
 
+To get a summary of installed snaps:
 
+    snap list 
 
-## bin, lib, conf
-___
-### bin
-/bin : Essential user command binaries (for use by all users)
-Purpose
-/bin contains commands that may be used by both the system administrator and by users, but which are required when no other filesystems are mounted (e.g. in single user mode). It may also contain commands which are used indirectly by scripts.
+To updates mailspring snap:
 
-### /usr/bin
-/usr/bin : Most user commands
-Purpose
-This is the primary directory of executable commands on the system.
+    snap refresh mailspring 
 
-### lib
-/lib : Essential shared libraries and kernel modules
-Purpose
-The /lib directory contains those shared library images needed to boot the system and run the commands in the root filesystem, ie. by binaries in /bin and /sbin.
+To update all snaps on the local system:
+    
+    snap refresh
 
-### /usr/lib : Libraries for programming and packages
-Purpose
-/usr/lib includes object files, libraries, and internal binaries that are not intended to be executed directly by users or shell scripts.
+To revert the snap mailspring to the previously used version:
 
-Applications may use a single subdirectory under /usr/lib. If an application uses a subdirectory, all architecture-dependent data exclusively used by the application must be placed within that subdirectory.
+    snap revert mailspring
 
-### /usr/src : 
-Source code (optional)
-Purpose
-Source code may be placed in this subdirectory, only for reference purposes. 
+* Note that the data associated with it will also revert.
 
-/etc : Host-specific system configuration
-Purpose
-The /etc hierarchy contains configuration files. A "configuration file" is a local file used to control the operation of a program; it must be static and cannot be an executable binary.
+To disable the snap mailspring:
 
-Requirements
-No binaries may be located under /etc.
+    snap disable mailspring
 
-The following directories, or symbolic links to directories are required in /etc:
+To enable snap
 
-Directory	Description
-opt	Configuration for /opt
-X11	Configuration for the X Window system (optional)
-sgml	Configuration for SGML (optional)
-xml	Configuration for XML (optional)
-Specific Options
-The following directories, or symbolic links to directories must be in /etc, if the corresponding subsystem is installed:
+    snap enable mailspring : 
 
-Directory	Description
-opt	Configuration for /opt
-The following files, or symbolic links to files, must be in /etc if the corresponding subsystem is installed:
+To remove snap completely:
 
-File	Description
-csh.login	Systemwide initialization file for C shell logins (optional)
-exports	NFS filesystem access control list (optional)
-fstab	Static information about filesystems (optional)
-ftpusers	FTP daemon user access control list (optional)
-gateways	File which lists gateways for routed (optional)
-gettydefs	Speed and terminal settings used by getty (optional)
-group	User group file (optional)
-host.conf	Resolver configuration file (optional)
-hosts	Static information about host names (optional)
-hosts.allow	Host access file for TCP wrappers (optional)
-hosts.deny	Host access file for TCP wrappers (optional)
-hosts.equiv	List of trusted hosts for rlogin, rsh, rcp (optional)
-hosts.lpd	List of trusted hosts for lpd (optional)
-inetd.conf	Configuration file for inetd (optional)
-inittab	Configuration file for init (optional)
-issue	Pre-login message and identification file (optional)
-ld.so.conf	List of extra directories to search for shared libraries (optional)
-motd	Post-login message of the day file (optional)
-mtab	Dynamic information about filesystems (optional)
-mtools.conf	Configuration file for mtools (optional)
-networks	Static information about network names (optional)
-passwd	The password file (optional)
-printcap	The lpd printer capability database (optional)
-profile	Systemwide initialization file for sh shell logins (optional)
-protocols	IP protocol listing (optional)
-resolv.conf	Resolver configuration file (optional)
-rpc	RPC protocol listing (optional)
-securetty	TTY access control for root login (optional)
-services	Port names for network services (optional)
-shells	Pathnames of valid login shells (optional)
-syslog.conf	Configuration file for syslogd (optional)
-mtab does not fit the static nature of /etc: it is excepted for historical reasons.
+    snap remove mailspring 
 
 ## systemd
 ___
 Replaces shell scripts with compiled C code, but still 99% compatible with older System V init scripts.
 
-It uses unit files located at: /usr/lib/systemd/system (Do not edit! They can be modified by package updates.)  
-    /etc/systemd/system (unit files here takes precedence to other unit files. Safest place to modify.)
-                               Runtime unit files: /run/systemd/system
+It uses unit files located at:
+    
+    /usr/lib/systemd/system 
+    
+* Do not edit! They can be modified by package updates.  
 
-systemd still checks /sbin/init
+Safest place to modify
 
-systemctl list-unit-files : lists all system's unit files by different sections.
+    /etc/systemd/system 
+    
+Unit files here takes precedence to other unit files.
 
-systemctl cat name.unit : This will print out the contents of the unit file specified.
+Runtime unit files: 
+    
+    /run/systemd/system
+
+systemd still checks:
+    
+    /sbin/init
+
+To list all system's unit files by different sections:
+
+    systemctl list-unit-files
+
+To print out the contents of the unit file specified:
+
+    systemctl cat name.unit 
 
 
-## add repo
-___
-/etc/yum.repos.d contains extra repository information.
-yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm will install the epel repository or any other repository that the address for is give.
-
-
-## local repo
-___
 ## create repo
 ___
-we can create a .repo file in /etc/yum.repo.d
+* we can create a .repo file in /etc/yum.repo.d
 
-## clean up
-___
+Install createrepo software pack:
+
+    sudo yum install createrepo
+
+Install yum-utils:
+
+    sudo yum install yum-utils
+
+Create a directory for an HTTP repository using:
+
+    sudo mkdir –p /var/www/html/repos/{base,centosplus,extras,updates}
+
+To create an FTP directory:
+
+    sudo mkdir –p /var/ftp/repos
+
+Download a local copy of the official CentOS repositories to your server. This allows systems on the same network to install updates more efficiently.
+
+To download the repositories:
+
+    sudo reposync -g -l -d -m --repoid=base --newest-only --download-metadata --download_path=/var/www/html/repos/
+
+    sudo reposync -g -l -d -m --repoid=centosplus --newest-only --download-metadata --download_path=/var/www/html/repos/
+    
+    sudo reposync -g -l -d -m --repoid=extras --newest-only --download-metadata --download_path=/var/www/html/repos/
+
+    sudo reposync -g -l -d -m --repoid=updates --newest-only --download-metadata --download_path=/var/www/html/repos/
+
+    
+Options in the previous commands:
+
+    –g: lets you remove or uninstall packages on CentOS that fail a GPG check
+
+    –l: yum plugin support
+
+    –d: lets you delete local packages that no longer exist in the repository
+
+    –m: lets you download comps.xml files, useful for bundling groups of packages by function
+
+    ––repoid: specify repository ID
+
+    ––newest-only: only download the latest package version, helps manage the size of the repository
+
+    ––download-metadata: download non-default metadata
+
+    ––download-path: specifies the location to save the packages
+
+To create a new Repo:
+
+    sudo createrepo /var/www/html //for HTTP
+
+    sudo createrepo /var/ftp //for FTP
+
+To setup a local YUM repository on a client machine:
+
+    sudo vim /etc/yum.repos.d/remote.repo
+
+In the file enter:
+
+<code>[remote]
+
+name=RHEL Apache
+
+baseurl=http://192.168.1.10 //Replace with IP address of your sever.
+
+enabled=1
+
+gpgcheck=0</code>
+
+If configuring for FTP use this instead:
+
+<code>
+
+[remote] 
+
+name=RHEL FTP
+
+baseurl=ftp://192.168.1.10 //Replace with IP address of your sever.
+
+enabled=1
+
+gpgcheck=0
+</code>
