@@ -271,6 +271,16 @@ Example of a SSL enabled server:
         ssl_prefer_server_ciphers on;
     }
 
+To redirect HTTP requests to HTTPS:
+
+    server {
+        listen 80 default_server;
+
+        server_name_;
+
+        return 301 https://$host$request_uri;
+    }
+
 ## HAproxy Load Balancer
 
 <p>HAProxy is another open source load balancing solution. As it is a single-purpose solution in that it only offers load-balancing capabilities, it is much more focused on that one aspect compared to Nginx. Below are a few benefits and drawbacks to using HAProxy.
