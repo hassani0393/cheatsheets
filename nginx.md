@@ -104,17 +104,6 @@ To enable http2 in nginx content must be served in SSL. This will activate it.
 
 ## Load Balancer
 
-Layer 7 Load Balancing:
-
-To pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000:
-
-        location ~ \.php$ {
-        root           html;
-        fastcgi_pass   127.0.0.1:9000;
-        fastcgi_index  index.php;
-        fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-        include        fastcgi_params;
-        }
 
 <p>Upstream module is used for load balancing.
 if you don't specify anything you get round robin load balancing.</p>
@@ -156,6 +145,17 @@ ___
         server 127.0.0.1:5555;
     }
 
+Layer 7 Load Balancing:
+
+To pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000:
+
+        location ~ \.php$ {
+        root           html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        include        fastcgi_params;
+        }
 
 ___
 
