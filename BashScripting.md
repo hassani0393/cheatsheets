@@ -32,7 +32,7 @@ To create a symbolic link to a file:
     ln -s data_file s1_data_file // Created the symbolic link s1_data_file
 
 <p>
-The two above file's inode numbers are different to. The Inode number of a file or directory is a unique identification number that the kernel assigns to each object in the filesystem.
+The two above file's inode numbers are different to. The inode number of a file or directory is a unique identification number that the kernel assigns to each object in the filesystem.
 </p>
 
 To view a file or directory's inode:
@@ -138,3 +138,92 @@ Processes communicate with eachother using <strong>signals</strong>. It's a pred
 | 18 | TSTP | Stops or pauses, but continues to run in background |
 | 19 | CONT | Resumes execution after STOP or TSTP |
 
+</br>
+To kill a process:
+
+    sudo kill 3940 // Use PID, Use -s to get forceful.
+
+To kill processes by using their names and/or wildcard:
+
+    killall http*
+
+___
+## Disk Space
+
+<p>
+To use a new media disk on the system, it must be placed in the virtual directory or in other words, be <strong>mounted</strong>.
+</p>
+
+To list currently mounted media devices:
+    
+    mount
+
+To manually mount a media device:
+
+    mount -t type device directory
+
+To mount a USB memory stick at device __/dev/sdb1__ at location __/media/disk__:
+
+    mount -t vfat /dev/sdb1 /media/disk
+
+<p>
+After mounting the root user has full access to the device, but access by other users is restricted, which can be changed using directory permissions.
+</p>
+
+To unmount a device:
+
+    umount directory
+or:
+
+    umount device
+
+To see the status of all mounted disks:
+
+    df -h
+
+To see disk usage for a specific directory or by default, the current directory:
+
+    du -s // -c produces a grand totall of all files listed and -s summarizes each argument.
+
+___
+## Working with Data Files
+
+To sort the data in a file:
+
+    sort file1 // By default does a char sort.
+
+"sort" parameters:
+
+    -n: Sorts numerically.
+    -M: Month sort
+    -b: Ignores leading blanks
+    -d: Considers only blanks and alphanumerics not special characters.
+    -k  POS1[,POS2]: Sorts based on POS1, and ends at POS2 if specified.
+    -o = file: Writes results to file specified.
+    -r: reverses the sort order.
+    -t  'SEP': Specifies field separator char.
+
+To search for a data in the middle of a file:
+
+    grep pattern file
+
+"grep" parameters:
+
+    -v: Outputs lines that don't match the pattern.
+    -n: Shows the line numbers.
+    -c: Shows only the count of the lines that contain the pattern.
+    -e: To specify more than one matching pattern (or).
+
+To compress a file with gzip package:
+
+    gzip file*
+
+To display contents of a compressed text file:
+
+    gzcat file1
+
+To uncompress a file:
+
+    gunzip file1
+
+p110
