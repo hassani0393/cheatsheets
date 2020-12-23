@@ -281,6 +281,7 @@ To exit a (child) shell:
 
     exit
 
+___
 ## Putting a process list in the background
 To have a list of commands,in a single line, run one after another, use ";" :
 
@@ -320,6 +321,7 @@ Another example using tar:
 
     (tar -cf file.tar /home/tars ; tar -cf My.tar /home/mostafa)&
 
+___
 ## Co-processing
 
 We can spawn a subshell in background mode and execute a command in that subshell, This is called co-processing:
@@ -339,6 +341,7 @@ To give the process a name:
 An <strong>external command</strong>, sometimes called a filesystem command, is a program that exists outside of the bash shell. They are typically located in <strong>/bin</strong>, <strong>/usr/bin</strong>, <strong>/sbin</strong>, or <strong>/usr/sbin</strong>.
 </p>
 
+___
 ## Built-in commands
 <p>
 Whenever an external command is executed, a child process is created. This action is called <strong>forking</strong>.
@@ -355,6 +358,23 @@ To see parent and forked child processes:
 To see flavors of a command:
 
     type -a pwd
+
+The __PATH__ environment variable defines the directory that the shell searches looking for external commands:
+
+    echo $PATH
+
+To add a new search directory:
+
+    PATH=$PATH:/home/userName/scripts
+
+A trick is going to the directory and:
+
+    PATH=$PATH:.
+
+<p> This is only valid until the next reboot.</p>
+<p>
+Remember to export the variable to global environment to be able to use it in the subshells.
+</p>
 
 To see a history of used commands:
 
@@ -376,6 +396,7 @@ To create an alias:
 Since command aliases are built-in commands, an alias is valid only for the shell process in which it is defined.
 </p>
 
+___
 ## Environment Variables
 
 Two types of the environment variables:
@@ -421,3 +442,79 @@ To create a global environment variable a local variable must be created first a
 Changing a global environment variable within a child shell does not affect the variable's value in the parent shell.
 </p>
 
+To remove an environment variable:
+
+    unset my_variable
+
+To add a string to an environment variable:
+
+    PATH=$PATH:/home/userName/scripts
+
+or
+
+    PATH=$PATH:.
+
+## Locating System Environment Variables
+
+<p>
+<strong>Startup files</strong> or <strong>environment files</strong> are files that by default are checked by the bash when somenone starts a bash shell. The startup files that bash processes depend on the method that we start a bash shell.
+</p>
+
+There are three ways that we can start a bash shell:
+
+* As a default login shell at login time 
+* As an interactive shell that is started by spawning a subshell
+* As a non-interactive shell to run script
+
+<p>
+When you login to a linux system, the bash shell starts as a login shell. The login shell typically looks for five different startup files to process commands from:
+</p>
+
+* /etc/profile
+<p>
+<strong>/etc/profile</strong> has a for statement that iterates through any files in the <strong>/etc/profile.d</strong> directory. Any application-specific startup files that are executed by the shell when we log in are placed in the <strong>profile.d</strong>.
+</p>
+
+<p>
+The first file found in the following ordered list is run, and the rest are ignored:
+</p>
+
+* $HOME/.bash_profile
+* $HOME/.bashrc
+* $HOME/.bash_login
+* $HOME/.profile
+
+<p>
+Each user can edit the files and add his or her own environment variables that are active for every bash shell session they start.
+</p>
+
+If bash is started as an interactive shell, it won't process the /etc/profile, and it will only check for the file <strong>.bashrc</strong>.
+
+The .bashrc file does two things:
+
+1. It checks for a common bashrc file in the __/etc directory__.
+2. It's a place for the user to enter __personal command aliases__ and __private script functions__.
+
+<p>
+For non-interactive subshells, we might want the system to run specific commands each time we start a script on the system. For that purpose we use the <strong>BASH_ENV</strong> environment variable.
+</p>
+
+p269
+## Basic Script Building
+
+### Creating a Script File
+
+At the first line we specify what shell we are using:
+
+    #!/bin/bash
+    # This script displays the date and who's logged on
+    date
+    who
+
+To give the file owner permisson to execute the file:
+
+    chmod u+x test1
+
+To echo a text string on the same line as a command output:
+
+    echo -n "The time and date are: "
