@@ -226,4 +226,198 @@ To uncompress a file:
 
     gunzip file1
 
-p110
+To create a tar archive file called test.tar containing the contents of test and test2 directories:
+
+    tar -cvf test.tar test/ test2/
+
+To list the contents of the tar file test.tar:
+
+    tar -tf test.tar
+
+To extract the contents of the tar file:
+
+    tar -xvf test.tar
+
+<p>If the tar file was created from a dir structure, the entire dir structure is recreated starting at the current directory.
+
+"tar" parameters:
+
+    -A: Appends a tar file to another tar file.
+    -c: Creates a new tar file.
+    -d: Checks the differences between a tar file and the filesystem.
+    --delete: Deletes from a tar file.
+    -r: Appends files to the end of a tar file.
+    -u: Appends files to an existing tar archive file that are newer than a file with the same name in the existing archive.
+    -C dir: Changes to the specified dir.
+    -f file1: Outputs results to file (or device) file1.
+    -j: Redirects output to the bzip2 command for compression.
+    -p: Preserves all file permissions.
+    -v: Lists files as they are processed.
+    -z: Redirects the output to the gzip command for compression.
+
+<p>The files ending in <strong>.tgz</strong> are gzipped tar files.</p>
+
+To extract .tgz files:
+
+    tar -zxvf filename.tgz
+
+___
+
+## Subshell
+
+To create a child shell: 
+
+    /bin/bash
+
+To check for child shells:
+
+    ps -f // Using parent process ID (PPID) we can find the parent shell process.
+
+To check subshells tree structure:
+
+    ps --forest
+
+To exit a (child) shell:
+
+    exit
+
+## Putting a process list in the background
+To have a list of commands,in a single line, run one after another, use ";" :
+
+    pwd ; ls ; cd /etc ; pwd ; cd ; pwd
+
+To have a process list, use parentheses:
+
+    (pwd ; ls ; cd /etc ; pwd ; cd ; pwd)
+
+<p>In a process list, a subshell is spawned to execute the commands.</p>
+
+<p>
+A process list is a <strong>command grouping type</strong>. Another command grouping type is { command; } which will not create a subshell like the process list does.
+</p>
+
+To check if a subshell is spawned we can use the __Environmental variable $BASH_SUBSHELL__:
+
+    echo $BASH_SUBSHELL
+
+To put a command into background mode we add __&__ at the end of it:
+
+    sleep 1000&
+
+To display background job information:
+
+    jobs -l
+
+To use a processes list in background mode & can be used:
+
+    (sleep 2; echo $BASH_SUBSHELL ; sleep)&
+
+<p>
+This way a large amount of processing within a subshell can be done without tying up the subshell's I/O.
+</p>
+
+Another example using tar:
+
+    (tar -cf file.tar /home/tars ; tar -cf My.tar /home/mostafa)&
+
+## Co-processing
+
+We can spawn a subshell in background mode and execute a command in that subshell, This is called co-processing:
+
+    coproc sleep 10
+
+To see co-processing status:
+
+    jobs
+
+To give the process a name:
+
+    coproc My_Job { sleep 10; } // A space must be put before and after the openning and closing curly brackets and a ; after the command. 
+
+
+<p>
+An <strong>external command</strong>, sometimes called a filesystem command, is a program that exists outside of the bash shell. They are typically located in <strong>/bin</strong>, <strong>/usr/bin</strong>, <strong>/sbin</strong>, or <strong>/usr/sbin</strong>.
+</p>
+
+## Built-in commands
+<p>
+Whenever an external command is executed, a child process is created. This action is called <strong>forking</strong>.
+</p>
+
+To check if a command is built-in:
+
+    type cd
+
+To see parent and forked child processes:
+
+    ps -f
+
+To see flavors of a command:
+
+    type -a pwd
+
+To see a history of used commands:
+
+    history
+
+To recall and reuse the last command in the history list:
+
+    !!
+
+To see a list of active aliases:
+
+    alias -p
+
+To create an alias:
+
+    alias li='ls -li'
+
+<p>
+Since command aliases are built-in commands, an alias is valid only for the shell process in which it is defined.
+</p>
+
+## Environment Variables
+
+Two types of the environment variables:
+* __Global variables__: Visible from the shell session and any spawned child subshells.
+* __Local variables__: Only available in the shell that creates them.
+
+To view global environment variables:
+
+    printenv
+or
+
+    env
+
+To display an individual environment variable's value:
+
+    Printenv HOME
+
+To pass the variable as acommand variable:
+
+    echo $HOME
+
+To see all local, global and user-defined variables for a specific process:
+
+    set
+
+To create a local user-defined variable, visible within the shell process:
+
+    my_variable="Hello World"
+
+The created variable can be referenced by $my_variable.
+
+<p>
+Be careful if you set a local variable in a child process, after you leave the child process, the local variable is no longer available.
+</p>
+
+<p>
+To create a global environment variable a local variable must be created first and then exported to the global environment.
+</p>
+
+    export my_variable
+
+<p>
+Changing a global environment variable within a child shell does not affect the variable's value in the parent shell.
+</p>
+
