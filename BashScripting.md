@@ -411,7 +411,7 @@ To create an alias:
     alias li='ls -li'
 
 <p>
-Since command aliases are built-in commands, an alias is valid only for the shell process in which it is defined.
+Since command aliases are built-in commands, an alias is valid only for the shell process in which it is defined. Store personal alias settings in the <strong>$HOME/.bashrc</strong> startup file to make them permanent.
 </p>
 
 ___
@@ -472,6 +472,7 @@ or
 
     PATH=$PATH:.
 
+___
 ## Locating System Environment Variables
 
 <p>
@@ -516,6 +517,76 @@ The .bashrc file does two things:
 <p>
 For non-interactive subshells, we might want the system to run specific commands each time we start a script on the system. For that purpose we use the <strong>BASH_ENV</strong> environment variable.
 </p>
+
+</p>
+To make it short, To create a persistent global environment variable or modify an existing one, create a file ending with .sh in the <strong>/etc/profile.d</strong>. Each user's persistent bash shell variable should be stored in the $HOME/.bashrc.
+</p>
+
+___
+## Linux User and File Permission
+
+<p>
+User info is saved in /etc/passwd file. System accounts use UIDs below 500.
+</p>
+
+<p>
+Passwords are held in the /etc/shadow file and only special programs are allowd to access it.
+</p>
+
+<p>
+System defaults for definition of a new user is in <strong>/etc/sbin/useradd</strong>.
+</p>
+
+To see default values:
+
+    /usr/sbin/useradd -D
+
+Standard startup files for the bash shell environment from the template <strong>/etc/skel</strong> are automatically copied into every user's HOME dir that is created.
+
+To remove a user along with his home dir:
+
+    /usr/sbin/userdel -r testUser
+
+| Command | Description |
+| :-: | :-: |
+| usermod | Edits user account fi elds, as well as specifying primary and secondary group |
+| membership | passwd Changes the password for an existing user |
+| chpasswd | Reads a fi le of login name and password pairs, and updates the passwords |
+| chage | Changes the password’s expiration date |
+| chfn | Changes the user account’s comment information |
+| chsh | Changes the user account’s default shell |
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 p269
 ## Basic Script Building
