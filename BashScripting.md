@@ -1,4 +1,22 @@
 # Bash Scripting
+## Index
+[File Globbing](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#file-globbing)<br>
+[Linking Files](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#linking-files)<br>
+["tree" command](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#tree-command)<br>
+[Viewing File Contents](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#viewing-file-contents)<br>
+[Processses](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#processses)<br>
+[Disk Space](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#disk-space)<br>
+[Working with Data Files](http://example.com/ "Title")<br>
+[Subshell](http://example.com/ "Title")<br>
+[Putting a process list in the background](http://example.com/ "Title")<br>
+[Co-processing](http://example.com/ "Title")<br>
+[Built-in commands](http://example.com/ "Title")<br>
+[Environment Variables](http://example.com/ "Title")<br>
+[Locating System Environment Variables](http://example.com/ "Title")<br>
+
+[Basic Script Building](http://example.com/ "Title")<br>
+
+
 
 ## File Globbing
 
