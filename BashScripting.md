@@ -547,24 +547,76 @@ To remove a user along with his home dir:
 
     /usr/sbin/userdel -r testUser
 
+To modify user accounts we use the following utilities:
+
+<center>
+
 | Command | Description |
 | :-: | :-: |
-| usermod | Edits user account fi elds, as well as specifying primary and secondary group |
+| usermod | Edits user account fields, as well as specifying primary and secondary group |
 | membership | passwd Changes the password for an existing user |
-| chpasswd | Reads a fi le of login name and password pairs, and updates the passwords |
+| chpasswd | Reads a file of login name and password pairs, and updates the passwords |
 | chage | Changes the password’s expiration date |
 | chfn | Changes the user account’s comment information |
 | chsh | Changes the user account’s default shell |
+
+</center>
 <br>
 
+To lock a user's account:
+
+    usermod -L testUser
+
+To unlock the account:
+
+    usermod -U test User
+
+To change password for a user:
+
+    passwd testUser
+
+To force a password change on the next login:
+
+    passwd -e testUser
+
+To do a mass password change from a file:
+
+    chpasswd < users.txt # userid:password
+
+To change a user's shell:
+
+    chsh -s /bin/csh testUser
+
+To find info ablut people on the system:
+
+    finger name
+
+To change finger information:
+
+    chfn name
+
+<p>
+All the finger info is stored in the <strong>/etc/passwd</strong> file.
+</p>
+
+<p>
+To manage password aging process for user accounts we use chage command according to the following table:
+</p>
+
+<center>
 
 
+| Parameter | Description |
+| :-: | :-: |
+| -d | Sets the number of days since the password was last changed |
+| -E | Sets the date the password expires |
+| -I | Sets the number of days of inactivity after the password expires to lock the
+account |
+| -m | Sets the minimum number of days between password changes |
+| -W | Sets the number of days before the password expires that a warning message appears |
 
 
-
-
-
-
+</center>
 
 
 
