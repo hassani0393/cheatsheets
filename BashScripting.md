@@ -4,7 +4,7 @@
 [Linking Files](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#linking-files)<br>
 ["tree" command](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#tree-command)<br>
 [Viewing File Contents](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#viewing-file-contents)<br>
-[Processses](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#processses)<br>
+[Processes](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#processes)<br>
 [Disk Space](https://github.com/hassani0393/cheatsheets/blob/main/BashScripting.md#disk-space)<br>
 [Working with Data Files](http://example.com/ "Title")<br>
 [Subshell](http://example.com/ "Title")<br>
@@ -124,7 +124,7 @@ To display first 10 lines of the file:
     head log_file
 
 ___
-## Processses
+## Processes
 
 To examine all processes:
 
@@ -144,6 +144,8 @@ For real-time process monitoring:
 Processes communicate with eachother using <strong>signals</strong>. It's a predefined message that processes recognize and choose to act on or ignore.
 </p>
 
+<center>
+
 | Signal | Name | Description |
 | :---: | :---: | :---: |
 | 1 | HUP | Hangs up |
@@ -155,6 +157,8 @@ Processes communicate with eachother using <strong>signals</strong>. It's a pred
 | 17 | STOP | Stops unconditionally, but doesn't terminate|
 | 18 | TSTP | Stops or pauses, but continues to run in background |
 | 19 | CONT | Resumes execution after STOP or TSTP |
+
+</center>
 
 </br>
 To kill a process:
@@ -618,44 +622,133 @@ account |
 
 </center>
 
+## Using Linux Groups
+
+Group information is stored in:
+
+    /etc/group
+
+To create a group:
+
+    /usr/sbin/groupadd groupName
+
+To add users to a group:
+
+    /usr/sbin/usermod -G groupName userName
+
+To change a groups name:
+
+    /usr/sbin/groupmod -n newName oldName
+
+To change a group's GID:
+
+    /usr/sbin/groupmod -g NewGID groupName
+
+To delete a group:
+
+    groupdel groupName
 
 
+## File Permissions
 
+To set the default umask:
+    
+    umask 026
 
+To change the security settings:
 
+    chmod 760 file
 
+or
 
+    [ugoa...][[+-=][rwxXstugo...]
 
+The first group of characters defines to whom the new permissions apply:
 
+* u for the user
+* g for the group
+* o for others (everyone else)
+* a for all of the above
 
+Symbol is used to indicate whether you want to add, subtract or set the permission to the value (=).
 
+The third symbol is the permission used for the setting.
 
+* X assigns execute permissions only if the object is a directory or if it already had
+execute permissions.
+* s sets the UID or GID on execution.
+* t saves program text.
+* u sets the permissions to the owner’s permissions.
+* g sets the permissions to the group’s permissions.
+* o sets the permissions to the other’s permissions.
 
+An example:
 
+    chmod o+r newfile
 
+The o+r entry adds the read permission to whatever permissions the everyone security
+level already had.
 
+To change the owner of the file:
 
+    chown userName fileName
 
+To change both the user and the group of a file:
 
+    chown userName.groupName fileName
 
+To change the default group for a file:
 
+    chown .defaultGroup fileName
 
-p269
-## Basic Script Building
+<p>
+We can use the chown command recursively through subdirectories and files using -R parameter, and we can also apply the changes to any files that are symbolically linked to the file using -h parameter.
+<p>
 
-### Creating a Script File
+To just change the default group for a file or directory:
 
-At the first line we specify what shell we are using:
+    chgrp groupName fileName
 
-    #!/bin/bash
-    # This script displays the date and who's logged on
-    date
-    who
+<p>
+Three additional bits of information that Linux stores for each file and directory:
+</p>
 
-To give the file owner permisson to execute the file:
+* The set user id (SUID): When a file is executed by a user, the program runs under
+the permissions of the file owner.
 
-    chmod u+x test1
+* The set group id (SGID): For a file, the program runs under the permissions of the
+file group. For a directory, new files created in the directory use the directory group
+as the default group.
 
-To echo a text string on the same line as a command output:
+* The sticky bit: The file remains(sticks) in memory after the process ends.
 
-    echo -n "The time and date are: "
+<p>
+To create a shared dir that always sets the directory group for all new files, we use the SGID.
+</p>
+
+## Managing Filesystems
+
+A note over filesystems:
+
+<p>
+"ext" was a mimick of the Unix filesystem. Used virtual directories to handle physical devices. It uses inodes system to track info about files stored in the virtual directory. Created a separate table on each physical device, called the inode table. File size was limited to 2GB. "ext2" was developed to expand the basic abilities of ext and added <strong>created, modified and last accessed time</strong> values for files. File size was increased to 2TB and in later versions to 32TB. "ext2" also reduced data blocks fragmentation by allocating disk blocks in groups. Up to ext2 it was notoriously easy for the filesystem to become corrupted if anything was going to happen to the system while the inode table entry wasn't complete.
+</p> 
+
+<p>
+To fix this problem, <strong>journaling filesystems</strong> were introduced. File changes were written to a journal file before being applied and the journal entry was deleted afterwards. The three methods of journalling from safest to fastest are <strong>Data mode</strong>, <strong>Ordered mode</strong> and <strong>Writeback mode</strong>.
+</p>
+
+<p>
+"ext3" filesystem created a journal file to each storage device. However it didn't support recovery from accidental deletion of files, built-in data compression and file encryption.
+</p>
+
+<p>
+The "ext4" filesystem supported compression and encryption and also a feature called extents which allocated space on a storage device in blocks and only stored the starting block location in the inode table saving space in the inode table. It also incorporated <strong>block preallocation</strong>.
+</p>
+
+<p>
+<strong>ReiserFS</strong> allowed resizing of an active fs and uses a technique called <strong>tailpacking</strong>, which stuffs data form one file into empty space in a data block from another file. "Reiser4" has several improvements, including extremly efficient handling of small files.
+</p>
+
+<p>
+Mostly found in IBM linux offerings, The <strong>JFS</strong> filesystem is a compromise between the speed of the Reiser4 and the integrity of the data mode journaling.
