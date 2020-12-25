@@ -14,6 +14,7 @@ To show statistics about network performance:
 
     ip -s link show eth0
 
+To check if a 
 ## Network Services
 
 The file /etc/services lists network services.

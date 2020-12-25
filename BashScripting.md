@@ -731,7 +731,11 @@ To create a shared dir that always sets the directory group for all new files, w
 A note over filesystems:
 
 <p>
-"ext" was a mimick of the Unix filesystem. Used virtual directories to handle physical devices. It uses inodes system to track info about files stored in the virtual directory. Created a separate table on each physical device, called the inode table. File size was limited to 2GB. "ext2" was developed to expand the basic abilities of ext and added <strong>created, modified and last accessed time</strong> values for files. File size was increased to 2TB and in later versions to 32TB. "ext2" also reduced data blocks fragmentation by allocating disk blocks in groups. Up to ext2 it was notoriously easy for the filesystem to become corrupted if anything was going to happen to the system while the inode table entry wasn't complete.
+"ext" was a mimick of the Unix filesystem. Used virtual directories to handle physical devices. It uses inodes system to track info about files stored in the virtual directory. Created a separate table on each physical device, called the inode table. File size was limited to 2GB. 
+</p>
+
+<p>
+"ext2" was developed to expand the basic abilities of ext and added <strong>created, modified and last accessed time</strong> values for files. File size was increased to 2TB and in later versions to 32TB. "ext2" also reduced data blocks fragmentation by allocating disk blocks in groups. Up to ext2 it was notoriously easy for the filesystem to become corrupted if anything was going to happen to the system while the inode table entry wasn't complete.
 </p> 
 
 <p>
