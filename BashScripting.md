@@ -885,3 +885,20 @@ The Linux LVM Commands:
 
 </center>
 
+___
+
+## Shell Scripting Basics
+
+To give execute permission to the user:
+
+    chmod u+x test1
+
+In the first line we must specify the shell we are using:
+
+    #!/bin/bash
+
+To tap into environment variables within the scripts:
+
+    echo "User info for userid: $USER"
+    echo UID: $UID
+    echo HOME: $HOME
