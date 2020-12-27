@@ -1011,3 +1011,331 @@ By default the shell script exits with the exit status of the last command in th
 To specify an exit code:
 
     exit 5
+
+or
+
+    exit $var
+
+___
+
+## Using Structured Commands
+
+### "if-then" statement
+
+Format of the if-then statement:
+
+    if command
+    then
+        commands
+    fi
+
+<p>
+Instead of having a boolean variable, it checkes the exit status of the command infront of the if. If it's anything other than 1, it skips the commands after.
+</p>
+
+Alternative format of the if-then statement:
+
+    if command;then
+        commands
+    fi
+
+An example:
+
+    if grep $testuser /etc/passwd
+    then
+    echo "This is my first command"
+    echo "This is my second command"
+    echo "I can even put in other commands besides echo:"
+    ls -a /home/$testuser/.b*
+    fi
+
+### "if-then-else" statement
+
+The format:
+
+    if command
+    then
+        commands
+    else
+        commands
+    fi
+
+An example:
+
+    testuser=NoSuchUser
+
+    if grep $testuser /etc/passwd
+    then
+        echo "The bash files for user $testuser are:"
+        ls -a /home/$testuser/.b*
+        echo
+    else
+        echo "The user $testuser does not exist on this system."
+        echo
+    fi
+
+An example for nesting ifs:
+
+    testuser=NoSuchUser
+
+    if grep $testuser /etc/passwd
+    then
+        echo "The user $testuser exists on this system."
+    else
+        echo "The user $testuser does not exist on this system."
+        if ls -d /home/$testuser/
+        then
+            echo "However, $testuser has a directory."
+         fi
+    fi
+
+A better structure than nested ifs is elif:
+
+    if command1
+    then
+        commands
+    elif command2
+    then
+        more commands
+    fi
+
+The same script using elif:
+
+    testuser=NoSuchUser
+
+    if grep $testuser /etc/passwd
+    then
+        echo "The user $testuser exists on this system."
+
+    elif ls -d /home/$testuser
+    then
+        echo "The user $testuser does not exist on this system."
+        echo "However, $testuser has a directory."
+    fi
+
+Extended elif:
+
+    if command1
+    then
+        command set 1
+    elif command2
+    then
+        command set 2
+    elif command3
+    then
+        command set 3
+    elif command4
+    then
+        command set 4
+    fi  
+
+We can use the test command to convert a condition into status code.
+
+    test condition
+
+To use test in an if-then statement:
+
+    if test condition
+    then
+        commands
+    fi
+
+If test is left empty it returns non-zero exit status code:
+
+    if test
+    then
+        echo "blah"
+    else
+        echo "This will be printed"
+    fi
+
+If test is used on an empty variable, it returns non-zero.
+
+    if test $my_variable
+    then
+        echo "it will show this message if it has content"
+    else
+        echo " you will see this message if it doesn't has a value "
+
+    Another way to test a condition:
+
+        if [ condition ] # The spaces are important.
+        then
+            commands
+        fi
+
+### Comparisons in "test"
+Example for numeric comparison:
+
+    if [ $value1 -eq $value2 ]
+    then
+        echo "The values are equal"
+    else
+        echo "The values are different"
+    fi
+
+or
+
+    if [ $value1 -gt 5 ]
+    then
+        echo "The test value $value1 is greater than 5"
+    fi
+
+<p>
+When using String comparison in "test", greater than and less than symbols must be escaped or the shell uses them as redirection symbols.
+</p>
+
+Example for string comparison:
+
+    if [ $val1 \> $val2 ]
+    then
+        echo "$val1 is greater than $val2"
+    else
+        echo "$val1 is less than $val2"
+    fi
+
+To check if the variable is non-zero in length:
+
+    if [ -n $val1 ]
+
+To check if the variable is zero in length:
+
+    if [ -z $val2 ]
+
+File comparisons:
+
+<center>
+
+| Comparison | Description |
+| :---: | :---: |
+| -d file | Checks if file exists and is a directory |
+| -e file | Checks if file exists |
+| -f file | Checks if file exists and is a file and not a directory |
+| -r file | Checks if file exists and is readable |
+| -s file | Checks if file exists and is not empty |
+| -w file | Checks if file exists and is writable |
+| -x file | Checks if file exists and is executable |
+| -O file | Checks if file exists and is owned by the current user |
+| -G file | Checks if file exists and the default group is the same as the current user " |
+| file1 -nt file2 | Checks if file1 is newer than file2, Check if the file exists before using|
+| file1 -ot file2 | Checks if file1 is older than file2, Check if the file exists before using |
+</br>
+
+</center>
+
+To look before you leap:
+
+    jump_directory=/home/arthur
+
+    if [ -d $jump_directory ]
+    then
+        echo "The $jump_directory directory exists"
+        cd $jump_directory
+        ls
+    else
+        echo "The $jump_directory directory does not exist"
+    fi
+
+To combine conditions:
+
+    [ condition1 ] && [ condition2 ]
+    [ condition1 ] || [ condition2 ]
+
+Example:
+
+    if [ -d $HOME ] && [ -w $HOME/testing]
+    then
+        echo "The file exists and you can write to it"
+    else
+        echo "I cannot write to the file"
+    fi
+
+### Advanced if-then Features
+
+To use advanced math formulas:
+
+    (( expression ))
+
+To use advanced string comparisons:
+
+    [[ expression ]]
+
+Example:
+
+    if [[ $USER == r* ]]
+
+### Case Command
+
+Format:
+
+    case variable in
+    pattern1 | pattern2) commands1;;
+    pattern3) commands2;;
+    *) default commands;;
+    esac
+
+Example:
+
+    !/bin/bash
+
+### Using the case command
+
+    case $USER in
+    rich | barbara)
+        echo "Welcome, $USER"
+        echo "Please enjoy your visit";;
+    testing)
+        echo "Special testing account";;
+    jessica)
+        echo "Do not forget to log off when you're done";;
+    *)
+        echo "Sorry, you are not allowed here";;
+    esac
+
+## More Structured Commands
+
+### "for" Command
+
+Format:
+
+    for var in list
+    do
+        commands
+    done
+
+Example:
+
+    for test in Alabama Alaska Arizona Arkansas California Colorado
+    do
+        echo The next state is $test
+    done
+    
+Reading a list from a variable:
+
+    list="Alabama Alaska Arizona Arkansas Colorado"
+    list=$list" Connecticut"
+
+    for state in $list
+    do
+        echo "Have you ever been to $state?"
+    done
+
+Reading values from the output of a command:
+
+    file="states"
+
+    for state in $(cat $file)
+    do
+        echo "Come visit $state"
+    done
+
+Default IFS:
+
+    space, tab, newline
+
+To temporarily change the IFS environment variable:
+
+    IFS.OLD=$IFS
+    IFS=$'\n'
+    //Do what you gotta do
+    IFS=$IFS.OLD
