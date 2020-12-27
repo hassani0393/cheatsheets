@@ -24,6 +24,11 @@ Caches latest repo info in:
 
      /var/cache/yum
 
+To see what repositories you're pulling software from:
+
+    yum repolist
+
+
 
  Searches online repos for updated packs compare to what is installed on the system and upgrades packages:
 
@@ -35,7 +40,9 @@ Searches the YUM repos for specific pack:
 
 Lists info about a specific pack:
 
-    yum info  
+    yum info  packName
+
+    yum list packName
 
 Displays all installed pack , use | less for ease.
 
@@ -45,9 +52,17 @@ Clean YUM DB and cache for refreshment and curroption removal
 
     yum clean all: 
 
+To skip the package with the broken dep and update the other software packages:
+
+    yum update --skip-broken
+
 Install a specific pack and all of its deps:
 
     yum install 
+
+To install a local rpm installation fiel:
+
+    yum localinstall package_name.rpm
 
 Uninstalls a pack, leaves deps:
 
@@ -84,6 +99,7 @@ To repair a corrupted RPM DB:
 
 To find out more information about a certain RPM package:
 
+
     rpm -qpi //qurry, particular package, information 
 
 To querry all packages on the system:
@@ -119,6 +135,10 @@ To untar the file:
 To install tools needed:
 
     sudo apt-get install build-essential git
+
+To install a source file to a destination directory:
+
+    
 
 ## Pip
 
