@@ -756,3 +756,132 @@ The "ext4" filesystem supported compression and encryption and also a feature ca
 
 <p>
 Mostly found in IBM linux offerings, The <strong>JFS</strong> filesystem is a compromise between the speed of the Reiser4 and the integrity of the data mode journaling.
+</p>
+
+<p>
+"XFS" journalling fs is the default on the RHEL. It uses the writeback mode of journaling and allows online resizing of the filesystem similar to the Reiser4, except it can only be expanded and not shrunk.
+</p>
+
+<p>
+Copy-on-write(COW) is an alternative to to the journaling. For modifying data, a clone or writable <strong>snapshot</strong> is used. Instead of writing modified data over current data, it's put in a new fs location and even when data modification is completed, the old data is never overwritten.
+</p>
+
+</p>
+The two Most popular COW file systems are ZFS and Btrfs.
+</p>
+
+To enter fdisk utility:
+
+    fdisk /dev/sdb
+
+"fdisk" commands:
+
+p: Show details of the storage device.
+
+n: Create a new partition. There can only be 4 partitions on a single storage device. We can extend that by creating multiple extended partitions and the creating primary partitions inside the extended partitions.
+
+l: Lists the different partitions available.
+
+w: Saves the changes to the storage device.
+</br>
+
+To inform the OS of partition table changes:
+
+    partprobe
+
+After creating a partition, it must be formated with a filesystem so Linux can use it. Different programs are used for formating with different filesystems.
+
+To check if the utility is available:
+
+    type mkfs.ext4
+
+To format with ext4 filesystem:
+
+    sudo mkfs.ext4 /dev/sdb1
+
+To mount the new filesystem in the virtual directory:
+
+    sudo mount -t ext4 /dev/sdb1 /mnt/my_partition
+
+<p>
+This way the filesystem is only termorarily mounted until the next reboot. To force Linux to automatically mount the new fs at boot time, the new filesystem must be added to the <strong>/etc/fstab</strong> file.
+</p>
+
+For ease, we use "fsck" utility which automatically uses proper utilities to check and repair most linux file systems:
+
+    fsck options filesystem
+
+## Managing Logical Volumes
+
+
+<p>
+Hard drives are called physical volumes (PV). Each PV maps to a specific physical partition created on a hard drive. Multiple PV elements are pooled together to create a volume group (VG). Logical volumes (LV) creates the partition environment for linux to create a fs, much like a physical partition. Each LV can be formatted as an ext4 filesystem and then mounted to a specific location in the virtual directory.
+</p>
+
+<p>
+LVM allows us to take snapshots of an actvie logical volume without locking the files and then copy it to another device.
+</p>
+
+<p>
+<strong>LVM striping</strong> allows us to write to a single file which is defined across multiple hard drives in a single logical volume, which improves disk performance but can lead to loss of a LV in case of a single drive failure.
+</p>
+
+<p>
+LVM can also create a complete copy of a LV that's updated real time. This is called an <strong>LVM mirror</strong>.
+</p>
+
+To convert the physical partitions of the hard drive into th physical volume extents used by LVM using fdisk:
+
+    fdisk ... 
+    t
+    8e
+    w
+
+Use the new partition to create the PV:
+
+    sudo pvcreate /dev/sdb1
+
+See the list of physical volumes created:
+
+    sudo pvdisplay /dev/sdb1
+
+Create a new volume group:
+
+    sudo vgcreate Vol1 /dev/sdb1
+
+To see details about the VG:
+
+    sudo vgdisplay vol1
+
+To create a logical volume:
+
+    sudo lvcreate -l 100%FREE -n lvName VGname
+
+To see the details of the logical volume:
+
+    sudo lvdisplay VGname
+
+To format a filesystem on the logical volume:
+
+    sudo mkfs.ext4 /dev/VGname/lvName
+
+To mount the volume in the virtual directory:
+
+    sudo mount /dev/VGname/lvName /mnt/my_partition
+
+
+The Linux LVM Commands:
+
+<center>
+
+| Command | Function |
+|:---: | :---: |
+| vgchange | Activates and deactivates a volume group |
+| vgremove | Removes a volume group |
+| vgextend | Adds physical volumes to a volume group |
+| vgreduce | Removes physical volumes from a volume group |
+| lvextend | Increases the size of a logical volume |
+| lvreduce | Decreases the size of a logical volume |
+
+</center>
+
