@@ -902,3 +902,112 @@ To tap into environment variables within the scripts:
     echo "User info for userid: $USER"
     echo UID: $UID
     echo HOME: $HOME
+
+To assign values to user vars:
+
+    var1=10
+    var2=-57
+    var3=testing
+    var4="still more testing"
+
+<p>
+These user values are deleted when the shell script is completed.
+</p>
+
+To reference user values:
+
+    days=5
+    guest="Mike"
+    echo "$guest checked in $days days ago"
+
+To assign the output of a shell command to a variable:
+
+    testVar=`date`
+
+or 
+
+    testVar=$(date)
+
+To redirect(overwrite) the output from a command to a file:
+
+    command > outputfile
+
+To redirect(append) the output from a command to a file:
+
+    command >> outputfile
+
+To redirect content of a file to the input of a command:
+
+    command < inputfile
+
+To redirect input inline:
+
+    wc << EOF
+    string 1
+    string 2
+    string 3
+    EOF
+
+To use piping:
+
+    rpm -qa | sort | less
+
+or to save to a file:
+
+    rpm -qa | sort > rpm.list
+
+To do integer math operations:
+
+    var1=$[1 + 5]
+
+<p>
+To do floating point operations we use "bc" application.
+</p>
+
+To use bc in a script:
+
+    var1=$(echo "scale=4; 3.44 /5" | bc)
+
+or
+
+    var3=$(echo "scale=4; $var1 / $var2" | bc)
+
+or for more complicated calculations:
+
+    var5=$(bc <<
+    scale = 4
+    a1 = ( $var1 * $var2)
+    b1 = ( $var3 * $var4)
+    a1 + b1
+    EOF
+    )
+
+<p>
+"$?" is a special variable that holds the exit status value from the last command that executed.
+</p>
+
+Linux Exit Status Codes:
+
+<center>
+
+| Code | Description |
+| :---: | :---: |
+| 0 | Successful completion of the command |
+| 1 | General unknown error |
+| 2 | Misuse of shell command |
+| 126 | The command can’t execute |
+| 127 | Command not found |
+| 128 | Invalid exit argument |
+| 128+x | Fatal error with Linux signal x |
+| 130 | Command terminated with Ctrl+C |
+| 255 | Exit status out of range |
+
+</center>
+
+<p>
+By default the shell script exits with the exit status of the last command in the script:
+</p>
+
+To specify an exit code:
+
+    exit 5
