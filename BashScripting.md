@@ -1339,3 +1339,220 @@ To temporarily change the IFS environment variable:
     IFS=$'\n'
     //Do what you gotta do
     IFS=$IFS.OLD
+
+Reading a Directory Using Wildcards:
+
+    for file in /home/rich/test/.b*
+    do
+        if [ -d "$file" ]
+        then
+            echo "$file is a directory"
+        elif [ -f "$file" ]
+        then
+            echo "$file is a file"
+        fi
+    done
+
+### "while" Command
+
+Format:
+
+    while test command
+    do
+        other commands
+    done
+
+Example:
+
+    var1=10
+    while [ $var1 -gt 0 ]
+    do
+        echo $var1
+        var1=$[ $var1 -1 ]
+    done
+
+### "until" Command
+
+Format:
+
+    until test commands
+    do
+        other commands
+    done
+
+Example:
+
+    until echo $var1
+        [ $var1 -eq 0 ]
+    do
+        echo inside the loop: $var1
+        var1=$[ $var1 - 25 ]
+    done
+
+### Controlling the Loop
+
+To breaks out of the loop that's currently processing ( The most inner loop ):
+
+    break
+
+To break out of outer loop, where n is the level starting from inside (1 is current loop):
+
+    break n
+
+To stop a loop iteration but not the loop itself:
+
+    continue
+
+To stop a loop iteration at a higher level:
+
+    continue n
+
+### Processing the output of a loop
+
+To redirect the results of the loop to a file:
+
+    done > output.txt
+
+To redirect the results of the loop to a command:
+
+    done > sort
+___
+
+## Handling User Input
+
+### Passing parameters:
+
+Positional Parameters:
+
+    $0 # the name of the script
+    $1 # first parameter up to $9
+    ${10} # for more than 9 parameters
+    $# # number of command line parameters included when running the cummand line.
+    The last param is $params
+    The last param is ${!#}
+    $* all params as a single word
+    $@ all params as a string of separate words
+    shift # shifts command line parameters in their relative positions
+    
+### Working with Options
+#### extracting command line options as parameters
+    
+    #!/bin/bash
+    #
+    echo
+    while [ -n "$1" ]
+    do
+        case "$1" in
+            -a) echo "Found the -a option" ;;
+            -b) echo "Found the -b option" ;;
+            -c) echo "Found the -c option" ;;
+             *) echo "$1 is not an option" ;;
+        esac
+        shift
+    done
+
+## Input and Output
+
+### "read" basics
+
+At it's simplest:
+    
+    read VAR
+
+Or to directly specify a prompt in read:
+
+read -p "Please enter your age: " age
+
+To assign data to multiple values inline:
+
+    read -p "Enter Your Name: "  first, last
+
+To specify a timer for user input:
+
+    read -t 5 -p "Please enter your name: " name
+
+To specify number of digits to enter and proceed:
+
+    read -n1 -p "Do you want to continue [Y/N]? " answer
+
+To prevent data being entered being displayed by matching the font color and bg color:
+
+    read -s -p "Enter your password: " pass
+
+### Reading from a file:
+
+    count=1
+    cat test | while read line
+    do
+        echo "Line $count: $line"
+        count=$[ $count + 1]
+    done
+
+### To redirect STDIN, STDOUT and STDERR:
+
+To redirect STDIN to a command:
+
+    cat < testfile
+
+To redirect STDOUT to a file:
+
+    ls -l > testfile
+
+To append:
+
+    ls -l >> testfile
+
+To redirect errors only:
+
+    ls -al badfile 2> test
+
+To redirect both:
+
+    ls -al test badtest 2> errfile 1> outfile
+
+To redirect both to the same file:
+
+    ls -al test &> file
+
+To redirect output to a specific file permanently:
+
+    exec 1>testout
+
+To redirect input in a script:
+
+    exec 0< testfiel
+
+To create an alternative file descriptor as well as STDOUT:
+
+    exec 3>test13out
+    echo "This displays on the monitor"
+    echo "And this will be stored in the file" >&3
+    
+To append to the file instead:
+
+    exec 3>>test13out
+    echo "This displays on the monitor"
+    echo "And this will appended to the file" >&3
+
+To create a read/write file descriptor:
+
+    exec 3<> testfile
+
+To close a file descriptor:
+
+    exec 3>&-
+
+To list all file descriptors:
+
+    /usr/sbin/lsof  -a -p $$ -d 0,1,2 # $$ means current PID
+
+To suppress output:
+
+    ls -al > /dev/null
+
+To suppress error messages:
+
+    ls -al badfile test16 2> /dev/null
+
+
+
