@@ -1554,5 +1554,11 @@ To suppress error messages:
 
     ls -al badfile test16 2> /dev/null
 
+To create a temporary file in a local directory:
 
+    mktemp testing.XXXXXX   # at least 3 X
+
+To create a temp file in the temporary directory:
+
+    mktemp -t test.XXXXXX
 
