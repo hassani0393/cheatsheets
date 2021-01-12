@@ -1292,6 +1292,8 @@ Example:
         echo "Sorry, you are not allowed here";;
     esac
 
+___
+
 ## More Structured Commands
 
 ### "for" Command
@@ -1451,6 +1453,8 @@ Positional Parameters:
         shift
     done
 
+___
+
 ## Input and Output
 
 ### "read" basics
@@ -1561,4 +1565,240 @@ To create a temporary file in a local directory:
 To create a temp file in the temporary directory:
 
     mktemp -t test.XXXXXX
+
+To send output to both the monitor and to a file for logging:
+
+    command | tee filename # overwrites the file
+    command | tee -a filename # appends to the file
+
+___
+
+## Script Control
+
+To kill a process by sending a SIGKILL:
+
+    kill -9 PID
+
+To trap a signal:
+
+    trap "echo ' Ctrl-C is trapped' " SIGINT
+
+To trap when the shell script exits:
+
+    trap "echo Goodbye..." EXIT # This will do the commands as the shell finishes it's job
+
+To remove traps:
+
+    trap -- SIGINT
+
+### Background Mode
+
+To run a script in background mode:
+
+    ./script &
+
+To make the scripts keep running in bg mode even after logging off the console, we use "nohup" command.
+
+    nohup ./test1.sh & # STDOUT and STDERR are redirected to file "nohup.out"
+
+### Job Control
+
+To view current jobs being handled by the shell:
+
+    jobs -l 
+
+Usefull parameters for jobs:
+
+<center>
+
+| Parameter | Description |
+| :---: | :---: |
+| -l | lists the PID as well |
+| -n | lists only jobs that have changed stats since their last notification from the shell |
+| -p | lists only the PIDs of the jobs |
+| -r | lists only the running jobs |
+| -s | lists only stopped jobs |
+
+</center>
+
+To restart a stopped job in background mode:
+
+    bg 2 # if no PID is provided, the default job is restarted
+
+To restart a job in foreground mode:
+
+    fg 2
+
+### Using "nice"
+
+To set priority for CPU time:
+
+    nice -n 10 ./test4.sh > test4.out &
+
+To set priority for running processes:
+
+    renice -n 10 -p 5055
+
+### Using "cron"
+
+The format of cron table:
+
+    min hour dayofmonth month dayofweek command
+
+Example:
+
+    15 10 * * * command # 10:15 everyday
+
+    15 16 * * 1 command # 4:15 pm every Monday
+
+    15 10 * * * /home/user/test.sh > testout
+
+<p>
+We can also copy the script to one of the following directories and the cron will execute it accordingly:
+
+    /etc/cron.daily
+    /etc/cron.hourly
+    /etc/cron.monthly
+    /etc/cron.weekly
+</p>
+
+## Functions
+
+To define a function:
+
+    function fname {
+
+    }
+
+or
+
+    fname() {
+    commands
+    }
+
+To call functions:
+
+    fname # use after the location where the function is defined
+
+To make the function return a value from 0 to 255:
+
+    return value
+    return $[ $value * 2 ]
+    return 2
+
+The output of a function can be assigned to a variable:
+
+    result='fname' # cathes output of for example echo command.
+
+We can pass parameteres to a function:
+
+    func1 10 $param
+
+To create a local variable inside a function:
+
+    local temp
+
+To use arrays in functions:
+
+    function testit {
+        local newarrey
+        newarray=(;'echo "$@"')
+        echo "The new array value is : ${newarray[*]}"
+    }
+    myarray=(1 2 3 4 5)
+    testit ${myarray[*]}
+
+To create a function on the command line:
+
+    function divem { echo $[ $1 / $2 ]; }
+
+or
+
+    function doubleit { read -p "Enter value: " value; echo $[ $value * 2 ]; }
+
+or
+
+    function multem {
+    echo $[ $1 * $2 ]
+    }
+
+    To have the function reload by the shell each time we start a new shell we place them in the .bashrc file either by writing them directly or by sourcing from an existing library file to .bashrc:
+
+        . /home/usr/libraries/myfuncs
+
+## "sed" Stream Editor
+
+Format:
+
+    sed options script file
+
+To replace "This" with "That" in a text file and output: 
+
+    sed 's/This/That/' file.txt
+
+To execute more than one editor command from the sed command line, we use the -e option:
+
+    sed -e 's/this/that/; s/dog/cat/' data1.txt
+
+To read sed commands from a file we use -f:
+
+    sed -f script1.sed data1.txt
+
+## "gawk" program
+
+Format:
+
+    gawk options program file
+
+The gawk options:
+
+-F fs: Specifies a file separator for deliminating data fields in a line
+-f file: Specifies a file name to read the program from
+-v var=value: defines a var and default value used in the gawk program
+-mf N: Specifies the maximum number of fields to process in the data file
+-mr N: Specifies the maximum record size in the data file
+-W keyword: Specify the compatibility mode or warning level for gawk
+
+
+
+Example:
+
+    gawk '{print "Hello World!"}'
+
+To generate and End-of-File (EOF) character in bash:
+
+    CTRL + D
+
+To print the first data field for each line of text:
+
+    gawk '{print $1}' data2.txt
+
+To specify another field separator:
+
+    gawk -F: '{print $1}' /etc/passwd
+
+To issue multiple command use colon:
+
+    echo "My name is Mostafa" | gawk '{$4="Hassan"; print $0}'
+
+To read the program from a file:
+
+    gawk -F: -f script.gawk /etc/passwd
+
+<p>
+The gawk script runs with the BEGIN keyword and END keyword allows to specify a program script that gawk executes after reading the data.
+</p>
+
+## Regex
+
+<p>
+Different utilities have different Regex. Sed and Gawk included.
+Special characters in Regex: .*[]^${}\+?|()
+Anchor characters:
+^   beginning of a line
+$   looks at the end of a line
+.   match any single character exept /n
+[]  characters to match
+[^] not one of these
+</p>
 
