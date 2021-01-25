@@ -1,4 +1,13 @@
-# Docker
+# Docker CLI
+
+To see a list of the Docker commands:
+
+    docker -h
+
+To list commands for a specific topic:
+
+    docker image -h
+
 To install docker on linux:
 
     wget -qO- https://get.docker.com |sh
@@ -6,6 +15,7 @@ To install docker on linux:
       sudo systemctl start docker
 
       sudo systemctl enable docker
+
 
 ## Running a Docker Image
 To run a Docker:
@@ -24,7 +34,7 @@ To run a docker in interactive mode and assign a name to it:
 
     docker run -it --name <nickname> <imagename>
 
-To run a persistent container that doesn't shut off on exit and restarts:
+To run a persistent background container that doesn't shut off on exit and restarts in case of shutdown:
 
     docker run -dt --name <nickname> --restart <restartArg> <imagename> #always, unless-stopped, on-failure, no
 
@@ -80,6 +90,10 @@ To get metrics about a specific container:
 
     docker stats <nickname>
 
+To get a listing of all running containers:
+
+    docker container ps
+
 ## Manging Images:
 
 To create a container image:
@@ -88,7 +102,7 @@ To create a container image:
 
 To pull an image:
 
-    docker pull alpine
+    docker image pull alpine
 
 To view pulled images:
 
