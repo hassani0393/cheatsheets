@@ -17,10 +17,20 @@ To install docker on linux:
       sudo systemctl enable docker
 
 
-## Running a Docker Image
-To run a Docker:
+## Creating Containers
+To run a container from an image:
 
-    docker run <container_name>
+    docker run <imagename>
+
+To run a command in a new container:
+
+    docker container run <imagename>
+
+To have the container be deleted after it's run:
+
+    docker container run --rm <imagename>
+
+
 
 To list running containers:
 
@@ -41,6 +51,8 @@ To run a persistent background container that doesn't shut off on exit and resta
 To have it remove the container upon the exit:
 
     docker run -it --name rm-test --rm alpine
+
+
 
 ## Starting and Stopping an Existing Container
 
@@ -68,11 +80,20 @@ To restart a container:
 
     docker restart <nickname>
 
+To pause all processes within one or more containers:
+
+    docker container pause <id>
+
+To unpause all processes within one or more containers:
+
+    docker container unpause <id>
+
+
 ## Managing Containers
 
 To remove a container:
 
-    docker rm <nickname>
+    docker rm -f <id/nickname>
 
 To remove all stopped containers:
 
@@ -86,13 +107,38 @@ To get metrics about all containers:
 
     docker stats
 
-To get metrics about a specific container:
+To get resource usage metrics about a specific container:
 
     docker stats <nickname>
 
 To get a listing of all running containers:
 
     docker container ps
+
+To get a listing of info about a container:
+
+    docker container inspect <id>
+
+To display running process of a container:
+
+    docker container top <id>
+
+To get log data of a container:
+
+    docker container logs <id>
+
+To drop in prompt in a running container:
+
+    docker container exec -it <id> /bin/bash
+
+To run a command in a running container:
+
+    docker container exec -it <id> <command>
+
+To export a container's filesystem as a tar archive:
+
+    export
+
 
 ## Manging Images:
 
@@ -119,6 +165,8 @@ To remove unused images:
 To get info about an image:
 
     docker image inspect <imgname>
+
+
 
 ## Dockerfiles
 
