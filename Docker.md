@@ -262,9 +262,18 @@ Show information logged by all containers participating in a service:
 
 ## Docker Networking:
 
-Open-source pluggable architecture
-Container Network Model (CNM)
-libnetwork implements CNM
-Drivers extend the network topologies
+<p>
+libnetwork implements Container Network Model (CNM), which is the specification for docker networking. I uses a system of drivers that extends them model by network topologies.
+</p>
 
+### Network Drivers:
 
+* Bridge is a Link layer device that forwards traffic between network segments. It allows containers connected to the same bridge network to communicate. Also isolates these containers from the other containers that are not connected to the same network. It is the default that is used everytime that we create a new container. This driver only works on Linux.
+
+* Everytime that we want to create a distributed network among multiple docker hosts, we use the overlay network driver. A good example is when using Swarm.
+
+* "macvlan" network driver allows us to assign a Mac address to a container and treat it as a real physical device on the network.
+
+* "non" driver is used to disable networking for a container. It is mostly used with a custom networking driver.
+
+* There are also third party "Network plugins" available with docker.
