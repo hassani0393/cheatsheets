@@ -202,9 +202,6 @@ To switch to a user:
 
     USER <user>
 
-Expose a port:
-
-    Expose <port>
 
 To set commands to run the container starts:
 
@@ -227,3 +224,47 @@ Tag an image for a repo:
 Push to repo:
 
     docker push <username>/<repo>
+
+## Exposing and Publishing Container Ports
+
+To expose a port we use --expose [PORT]. For example:
+
+    docker container run --expose [portnum] [image]
+
+To publish a port(Map a container's port to a host's port):
+
+    docker container run -p [HOST_Port]:[CONTAINER_Port] [IMAGE]
+
+
+
+    docker container run -p [HOST_PORT]:[CONTAINER_PORT]/tcp -p [HOST_PORT]:[CONTAINER_PORT]/udp [IMAGE]
+
+To publish all exposed ports to random ports
+
+    docker container run -P
+
+To list all port mappings or a specific mapping for a container:
+
+    docker container port [containername]
+
+## Docker Logging
+
+Show information logged by a running container:
+
+    docker container logs <containername/id>
+
+Show information logged by all containers participating in a service:
+
+    docker service logs <service>
+
+<p> Logs need to be output to STDOUT and STDERR. </p>
+
+
+## Docker Networking:
+
+Open-source pluggable architecture
+Container Network Model (CNM)
+libnetwork implements CNM
+Drivers extend the network topologies
+
+
