@@ -277,3 +277,69 @@ libnetwork implements Container Network Model (CNM), which is the specification 
 * "non" driver is used to disable networking for a container. It is mostly used with a custom networking driver.
 
 * There are also third party "Network plugins" available with docker.
+
+### Closer Look at CNM:
+
+It consists of three building blocks:
+
+- Sandboxes: Isolates the network stack, which includes: Networking Interfaces, Ports, Rout tables and DNS.
+- Endpoints: Virtual Network Interfaces, It connects the sandbox to a network. Since they act like real network adaptors, they can only be connected to a single network.
+- Networks: software implementations of 802.1d bridge.
+
+### Docker Networking Commands:
+
+To list all the networks created on the host:
+
+    docker network ls
+
+To get detailed info on a network:
+
+    docker network inspect <name>
+
+To create a network:
+
+    docker network create <name>
+
+To remove a network:
+
+    docker network rm <name>
+
+To remove all unused networks:
+
+    docker network prune
+
+To add a container to a network:
+
+    docker network connect <network> <container>
+
+To create a container that uses a network:
+
+    docker container run -name <name> -it --network <network> <image> /bin/bash
+
+To remove a container from a network:
+
+    docker network disconnect <network> <container>
+
+To create a network with a subnet and gateway:
+
+    docker network create --subnet <subnet> --gateway <gateway> <name>
+
+For example:
+
+    docker network create --subnet 10.1.0.0/24 --gateway 10.1.0.1 br02
+
+and:
+
+    docker network create --subnet 10.1.0.0/16 --gateway 10.1.0.1 \
+    --ip-range=10.1.4.0/24 --driver=bridge --label=host4network br04
+
+Assigning an IP to a container:
+
+    docker container run -name <name> -it --network <network> --ip <IP> <image> <CMD>
+
+Adding a container to a network:
+
+    docker network connect <network> <container>
+
+## Docker Storage
+
