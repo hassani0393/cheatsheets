@@ -341,5 +341,56 @@ Adding a container to a network:
 
     docker network connect <network> <container>
 
-## Docker Storage
+## Docker Storage Concepts
+
+Categories of data storage:
+* Non-persistent: short-lived data that is tied to the lifecycle of the container like application data. Every container has it.
+* Persistent: We want it to stick around. We used volumes to do so. Volumes live outside of containers. Like data in a database that the application uses.
+
+<p> Non-persistent storage is also called local storage and snapshot storage. It's usually found in /var/lib/docker/"STORAGE-DRIVER". </P>
+
+Storage Drivers:
+* RHEL: overlay2
+* Ubuntu: overlay2 or aufs
+* SUSE: btrfs
+* Windows: uses it's own default storage driver.
+
+Ways to handle persistent data:
+* Use a volume for persistent data
+* bind mounts
+
+To use volumes:
+1. Create the volume.
+2. Create the container.
+3. Mount the volume to a directory in the container.
+
+<p> Deleting the container does not delete the volume. Volumes are first-class citizens, which means they are their own object,they have their own APIs as well as their own sub-commands. The local driver is used by default. This means that when we create a volume, it's created on the local driver on the docker server.</p>
+
+* Volumes are created by default on /var/lib/docker/volumes/
+
+## Docker Volume Commands
+
+To list all docker volume commands:
+
+    docker volume -h
+
+To list all volumes on a host:
+
+    docker volume ls
+
+To create a volume:
+
+    docker volume create <name> # To set the driver use -d. Use --label to set metadata. Use -o to set driver specific options.
+
+To inspect a volume:
+
+    docker volume inspect <name> // If a volume name is not given it's going to set a volume ID.
+
+To delete a volume:
+
+    docker volume rm <name>
+
+To delete all unused volumes:
+
+    docker volume prune
 
