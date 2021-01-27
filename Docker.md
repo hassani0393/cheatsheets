@@ -368,7 +368,7 @@ To use volumes:
 
 * Volumes are created by default on /var/lib/docker/volumes/
 
-## Docker Volume Commands
+### Docker Volume Commands
 
 To list all docker volume commands:
 
@@ -394,3 +394,25 @@ To delete all unused volumes:
 
     docker volume prune
 
+To use the mount flag for mounting a volume on a container:
+
+    docker container run -d --name <Name> --mount type=volume,source=<thevolume>,target=<mountLocationInTheContainer> <nameofImage>
+
+To create a volume using volume flag:
+
+    docker container run -d --name <NAME> -v <Volume-name>:<target> <image>
+
+To create a volume that is read-only by the container:
+
+    docker run -d --name=web01 --mount source=html-volume,target=/usr/share/nginx/html,readonly nginx
+
+
+### Using Bind Mounts
+
+Using the mount flag:
+
+    docker container run -d --name <name> --mount type=bind,source=<SOURCE>,target=<TARGET> <IMAGE>
+
+Using the volume flag:
+
+    docker container run -d --name <NAME> -v <SOURCE>:<TARGET> <IMAGE>
