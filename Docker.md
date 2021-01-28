@@ -343,23 +343,23 @@ Adding a container to a network:
 
 ## Docker Storage Concepts
 
-Categories of data storage:
+### Categories of data storage:
 * Non-persistent: short-lived data that is tied to the lifecycle of the container like application data. Every container has it.
 * Persistent: We want it to stick around. We used volumes to do so. Volumes live outside of containers. Like data in a database that the application uses.
 
 <p> Non-persistent storage is also called local storage and snapshot storage. It's usually found in /var/lib/docker/"STORAGE-DRIVER". </P>
 
-Storage Drivers:
+### Storage Drivers:
 * RHEL: overlay2
 * Ubuntu: overlay2 or aufs
 * SUSE: btrfs
 * Windows: uses it's own default storage driver.
 
-Ways to handle persistent data:
+### Ways to handle persistent data:
 * Use a volume for persistent data
 * bind mounts
 
-To use volumes:
+### To use volumes:
 1. Create the volume.
 2. Create the container.
 3. Mount the volume to a directory in the container.
@@ -416,3 +416,98 @@ Using the mount flag:
 Using the volume flag:
 
     docker container run -d --name <NAME> -v <SOURCE>:<TARGET> <IMAGE>
+
+## Docker Instructions
+
+- From: Initializes a new build stage and sets the base 
+image.
+
+- RUN: Executes any commands in a new layer.
+
+- CMD: Provides a default for an executing container. There can only be one CMD instruction in a dockerfile.
+
+- LABEL: Adds metadata to an image.
+
+- EXPOSE: Informs Docker that the container listens on 
+the specific network ports at runtime.
+
+- ENV: Sets the environment variable "key" to the "value"
+
+- COPY: Copies new files or directories from "src" and adds them to the filesystem of the container at the path 
+"dest".
+- ADD: Copies new files, directories or remote file URLs 
+from "src" and adds them to the filesystem of the image 
+at the path "dest".
+
+- ENTRYPOINT: Allows configuring a container that will run as an executable.
+
+- VOLUME: Creates a mount point with the specified name and marks it as holding externally mounted volumes from native host or other container.
+
+- USER: Sets the username and optionally the user group to use when running the image and for any RUN, CMD, and ENTRYPOINT instructions that follow it in the dockerfile.
+
+    RUN useradd -ms /bin/bash cloud_user
+    USER cloud_user
+
+- WORKDIR: Sets the working dir for any RUN, CMD, ENTRYPINT, COPY and ADD instructions that follow it in the dockerfile.
+
+- ARG: Defines a variable that users can pass at build-time to the builder with the docker build command, using the --build-arg "varname"="value" flage.
+
+- ONBUILD: Adds a trigger instruction to the image that will be executed at a later time, when the image is used as the base for another build.
+
+- HEALTHCHECK: Tells Docker how to test a container to check that it is still working.
+
+- SHELL: Allows the default shell used for the shell form of commands to be overriden.
+
+### Environment Variables
+
+When building an image, we can use "--env" flag to pass an environment variable:
+
+    --env [KEY]=[VALUE]
+
+To use the ENV instruction in dockerfile:
+
+    ENV [KEY]=[VALUE]
+    ENV [KEY] [VALUE]
+
+
+### Build Arguments
+
+Using build argument flag in the image building:
+
+    --build-arg [NAME]=[VALUE]
+
+Using the ARG instruction in the Dockerfile:
+
+    ARG [NAME]=[DEFAULT_VALUE]
+
+
+
+## Docker Compose
+
+### Downloading and Installing Docker Compose
+
+Downloading the latest version of Docker Compose:
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+Apply executable permissions:
+
+    sudo chmod +x /usr/local/bin/docker-compose
+
+Test Docker Compose:
+
+    docker-compose --version
+
+### Compose Commands:
+
+* docker-compose
+
+### Management Commands:
+
+- up: Create and start containers
+
+- ps: List containers
+- stop: Stop services
+- start: Start services
+- restart: Restart services
+- down: Stop and remove containers, networks images, and volumes
