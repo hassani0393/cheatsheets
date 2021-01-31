@@ -500,14 +500,60 @@ Test Docker Compose:
 
 ### Compose Commands:
 
-* docker-compose
+Create a docker compose file
+
+
+* docker-compose.yml
+    version: '3'
+    services:
+       web:
+         image: nginx
+         ports:
+         - "8080:80"
+         volumes:
+         - nginx_html:/usr/share/nginx/html/
+         links:
+         - redis
+       redis:
+         image: redis
+    volumes:
+       nginx_html: {}
+
+Create a compose service and start containers(-d: run containers in the background):
+    
+    docker-compose up -d: 
+
+List the containers created by compose:
+
+    docker-compose ps
+
+Stop a compose service:
+
+    docker-compose stop
+
+Start a compose service:
+
+    docker-compose start
+
+Restart a compose service:
+
+    docker-compose restart
+
+Delete a compose service:
+
+    docker-compose down
 
 ### Management Commands:
 
 - up: Create and start containers
 
 - ps: List containers
+
 - stop: Stop services
+
 - start: Start services
+
 - restart: Restart services
+
 - down: Stop and remove containers, networks images, and volumes
+
