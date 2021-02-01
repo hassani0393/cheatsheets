@@ -557,3 +557,4 @@ Delete a compose service:
 
 - down: Stop and remove containers, networks images, and volumes
 
+-test
