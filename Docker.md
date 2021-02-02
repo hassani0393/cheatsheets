@@ -31,14 +31,9 @@ To have the container be deleted after it's run:
     docker container run --rm <imagename>
 
 
+Same commands only for stopped containers:
 
-To list running containers:
-
-    docker container ls
-
-To list all containers:
-
-    docker container ls -a
+    docker container ls -a -f status=exited
 
 To run a docker in interactive mode and assign a name to it:
 
@@ -103,13 +98,25 @@ To rename a container:
 
     docker rename <nickname> <newnickname>
 
+To list running containers:
+
+    docker container ls
+
+To list all containers:
+
+    docker container ls -a
+
+To list all containers' IDs(So we can pass it to another command):
+
+    docker container ls -a -q
+
 To get metrics about all containers:
 
     docker stats
 
 To get resource usage metrics about a specific container:
 
-    docker stats <nickname>
+    docker container stats <nickname>
 
 To get a listing of all running containers:
 
@@ -557,4 +564,26 @@ Delete a compose service:
 
 - down: Stop and remove containers, networks images, and volumes
 
--test
+
+## Docker Events
+
+To get realtime events:
+
+    docker system events
+
+To see past events and keep listening
+
+    docker system events --since '<Time_Period>'
+
+To filter events:
+
+    docker system events --filter <Filter_name>=<filter>
+
+Example:
+
+    docker system events --filter event=attach
+
+or:
+
+    docker system events --filter type=container --filter event=attach --filter event=die --filter event=stop
+
