@@ -8,6 +8,7 @@
 
 ## Architecture
 
+* Source: https://devopscube.com/jenkins-architecture-explained/
 
 ![Jenkins Architecture](https://devopscube.com/wp-content/uploads/2020/03/jenkins-architecture-1024x657.png)
 
@@ -66,8 +67,9 @@
 Jenkins Master-Slave Connectivity
 You can connect a Jenkins master and slave in two ways
 
-Using the SSH method: Uses the ssh protocol to connect to the slave. The connection gets initiated from the Jenkins master. Ther should be connectivity over port 22 between master and slave.
-Using the JNLP method: Uses java JNLP protocol. In this method, a java agent gets initiated from the slave with Jenkins master details. For this, the master nodes firewall should allow connectivity on specified JNLP port. Typically the port assigned will be 50000. This value is configurable.
+1. Using the SSH method: Uses the ssh protocol to connect to the slave. The connection gets initiated from the Jenkins master. There should be connectivity over port 22 between master and slave.
+
+2. Using the JNLP method: Uses java JNLP protocol. In this method, a java agent gets initiated from the slave with Jenkins master details. For this, the master nodes firewall should allow connectivity on specified JNLP port. Typically the port assigned will be 50000. This value is configurable.
 
 ### Jenkins Master-Slave Connectivity
 * You can connect a Jenkins master and slave in two ways
