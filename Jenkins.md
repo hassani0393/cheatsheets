@@ -2,9 +2,67 @@
 # Jenkins
 
 ## History and Usage
-<p>In the classic method to develop software </p>
+<p>In the classic method to develop software,  </p>
 
 ## Concepts
+
+### CI
+
+<p> A software development practice in which members of a team integrate their work frequently, at least daily, leading to multiple integrations per day. </p>
+
+### CD
+
+<p> A software development discipline where software is built in a manner that allows for deploying to customers at any time.</p>
+
+### Jobs in Jenkins
+
+<p> Any runnable task that is controlled by Jenkins. Job=Project.</p> 
+
+- Freestyle Project: The most common type of project. The build step normally executes a shell command. Most freedom in configuration.
+- Pipeline: Normally writne in DSL. Use for two complicated or projects that span multiple nodes. For projects with large scope.
+- Multi-Configuration Project: For projects that are tested on multiple environments, android windows linux ...
+- Git-Hub Organization: Use the source control platform's org and allows Jenkins to act on Jenkinsfiles stored within organization's repositories.
+- Folder: An item not a project. Creates a folder hierarchy for giving logical organization for items. The folder name becomes a part of the path for the project.
+- Multi-Branch Pipeline: Jenkins uses a Jenkinsfile to mark repositories. If a branch is created, Jenkins will make a new proj in Jenkins for that project.
+
+### Builds in Jenkins
+<p> A Build is the result of a single execution of a project. It will produce artifacts, which are immutable files (jar, war, config files and other generated assets.) that are generated during a build or a pipeline run. They are archived on the Jenkins master for later retrieval. These artifacts are maintained in a repo on Jenkins master or in an another SCM. Repositories hold items that need to be retrieved, such as source code, compiled code artifacts and config files.
+
+### Build Tools
+<p> Software that actually performs the build portion of the pipeline, like Maven, Ant, and shell scripting. Usually installed as plugins.</p>
+
+### Source Code Manager 
+<p>A SCM is a Software that track changes in code. Changes in code(revisions) are timestamped and include the identity of the person that made the change. These changes can be tracked or roll backed. Versions can be compared, stored and merged with other versions. Examples are Git, Subversion, Mercurial and Perforce.
+
+### Testing
+<p> The process of checking code to ensure that it is working as designed, or that its output is what expected.</p>
+
+- Unit Test: Individual components(units) like classes, methods and modules are tested to ensure that outputs are as expected.
+
+- Smoke Test: A general test of the software for checking its main functionality. To see if it's stable enough for further testing. Does it load? Does the menus work? Does it crash when the save button is clicked?
+
+- Verification Test: Did we satisfy the build requirements as mentioned in the build doc? Automated verification testing is used to streamline this process.
+
+- Functional Test: Checks a specific, probably recently added function of the software. Does this feature work? Can a user do this?
+
+- Acceptance Test: We handoff the software to the client and the client does the acceptance test to ensure that the software meets their expectations.
+
+### Notifications
+<p> Notifications give feedback to the status of processes within the project. They are critical to an automated process. If a build fails, or if it's needed to manually approve a deployment, a notification can be configured to be sent. They can be in form of emails, sms and several types of instant messaging platforms like slack that are configurable using plugins.</p>
+
+### Distributed Builds
+<p> Distributed builds are "build jobs" in which the executor of the build is located on an agent (node) that is separate from the master. The reason for this is parallelism. The master acts as the controller for the build, running specific builds on specific agents, which results in parallelism and greater ease in multiconfiguration pipelines. So for 3 versions of a software to do 5 unit tests against, this can be done in one parallel pass, to have 5 tests on 3 agents, instead of 15 tests on the master. Nodes with specific configurations can be tagged so that pipeline steps specific to that configuration are directed to that node. Agents must be "fungible", Which means replacable, as in there should be nothing special about them and the local configuration should be kept to minimal and the global configurations  on the master should be preferred.</p>
+
+### Plugins
+<p> Extensions to Jenkins that add to its functionality.</p>
+
+### Security
+<p>Jenkins uses Matrix Security for authorization.</p>
+
+### Artifacts
+
+### Fingerprints
+
 
 ## Architecture
 
@@ -92,8 +150,6 @@ You can connect a Jenkins master and slave in two ways
 * It is very important to back up the Jenkins data folder every day. For some reason, if your Jenkins server data gets corrupt, you can restore whole Jenkins with the data backup.
 
 
-
-
 ## Installation
 
 ### Running Jenkins from War File
@@ -102,12 +158,21 @@ You can connect a Jenkins master and slave in two ways
     wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war
     java -jar jenkins.war --httpPort=80 --prefix=/dashboard
 
-### 
+### Centos7
 
-
+    sudo su # this prevents us from having to issue sudo each time.  
+    yum install -y wget  
+    wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo  
+    rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key  
+    yum install jenkins  java-1.8.0-openjdk-devel git -y  
+    systemctl enable jenkins && systemctl restart jenkins 
 
 
 ## Configurations
+
+* The default location of the archive repo:
+    Jenkins root/jobs/buildname/builds/lastSuccessfulBuild/archive
+
 
 ## HA
 
